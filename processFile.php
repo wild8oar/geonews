@@ -43,7 +43,11 @@
         $inserted = 1;
 
         $userId = DB::queryFirstField("SELECT id FROM user WHERE username=%s LIMIT 1", $username);
-//        l("retrieved user id $userId for username $username");
+        $logIds = DB::queryFirstColumn("SELECT log.id FROM image, log WHERE image.log = log.id AND log.user = %i", $userId);
+        foreach($logIds as $logId) {
+          DB::delete('image', "log=%i", $logId);
+//          l("deleted image");
+        }
         DB::delete('log', "user=%i", $userId);
       }
 
