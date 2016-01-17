@@ -125,24 +125,33 @@
         }
       } else { // premium
         $lines = explode(PHP_EOL, $html);
-        $next = false;
-        $cacheName = '';
+        $nextDifficulty = false;
+        $nextTerrain = false;
         foreach($lines as $line) {
-          if($next) {
-            $cacheName = trim($line);
+          if(strpos($line, '<h1 class="heading-3">')) {
+            $cacheName = retrieveCacheNameForPremium($line);
           }
-          $next = checkIfNextLine($line);
 
-          if(strpos($line, '<img src="/images/stars')) {
+          if($nextDifficulty) {
             $difficulty = retrieveDifficultyForPremium($line);
+            $nextDifficulty = false;
           }
 
-          if(strpos($line, '<img src="/images/stars')) {
-            $terrain = retrieveTerrain($line);
+          if(strpos($line, '<li><span id="ctl00_ContentBody_lblDifficulty" class="span__title">Difficulty</span>')) {
+            $nextDifficulty = true;
+          }
+
+          if($nextTerrain) {
+            $terrain = retrieveTerrainForPremium($line);
+            $nextTerrain = false;
+          }
+
+          if(strpos($line, '<li><span id="ctl00_ContentBody_lblTerrain" class="span__title">Terrain</span>')) {
+            $nextTerrain = true;
           }
         }
         $created = date('Y-m-d');
-        $log = 'No log found.';
+        $log = 'Premium.';
         $logType = 'Found it';
       }
 
@@ -210,9 +219,9 @@
   function getGeocacheType($html) {
     if(strpos($html, 'title="Multi-cache"')) {
       return 'Multi-cache';
-    } else if(strpos($html, 'title="Mystery Cache"')) {
+    } else if(strpos($html, 'title="Mystery Cache"') || strpos($html, 'Mystery')) {
       return 'Unknown Cache';
-    } else if(strpos($html, 'title="Traditional Geocache"')) {
+    } else if(strpos($html, 'title="Traditional Geocache"') || strpos($html, 'Traditional')) {
       return 'Traditional Cache';
     } else if(strpos($html, 'title="Wherigo Cache"')) {
       return 'Wherigo Cache';
@@ -232,7 +241,7 @@
   }
 
   function retrieveDifficultyForPremium($line) {
-    $difficulty = preg_split('/.gif/', preg_split('/.*\/stars\/stars/', $line)[1])[0];
+    $difficulty = preg_split('/</', preg_split('/>/', $line)[1])[0];
     return (double)str_replace('_', '.', $difficulty);
   }
 
@@ -241,12 +250,17 @@
     return (double)str_replace('_', '.', $terrain);
   }
 
+  function retrieveTerrainForPremium($line) {
+    $terrain = preg_split('/</', preg_split('/>/', $line)[1])[0];
+    return (double)str_replace('_', '.', $terrain);
+  }
+
   function retrieveCacheName($line) {
     return trim(preg_split('/</', preg_split('/>/', $line)[1])[0]);
   }
 
-  function checkIfNextLine($line) {
-    return strpos($line, 'ctl00_ContentBody_uxWptTypeImage');
+  function retrieveCacheNameForPremium($line) {
+    return trim(preg_split('/</', preg_split('/>/', $line)[1])[0]);
   }
 
   function transformDate($date) {
