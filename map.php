@@ -1,4 +1,5 @@
 <?
+  require_once('util/general.php');
   require_once('util/connection.php');
   require_once('util/logger.php');
 ?>
@@ -6,7 +7,7 @@
 <html>
 <? require_once('include/head.html'); ?>
    <body>
-<? require_once('include/navigation.html'); ?>
+<? showNavigation(); ?>
     <div id="no-gpx" class="panel-body" hidden="hidden">
       <div class='panel panel-info'>
         <div class='panel-heading'>No geocaches with location data found</div>

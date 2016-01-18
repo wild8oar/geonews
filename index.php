@@ -1,4 +1,5 @@
 <?
+  require_once('util/general.php');
   require_once('util/connection.php');
   require_once('util/logger.php');
   require_once('util/types.php');
@@ -7,7 +8,7 @@
 <html>
 <? require_once('include/head.html'); ?>
    <body>
-<? require_once('include/navigation.html'); ?>
+<? showNavigation(); ?>
    <div class="panel-body">
 <?
   if(getSessionUser() == "") {

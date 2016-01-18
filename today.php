@@ -1,4 +1,5 @@
 <?
+  require_once('util/general.php');
   require_once('util/connection.php');
   require_once('util/logger.php');
   require_once('util/types.php');
@@ -7,8 +8,9 @@
 <html>
 <? require_once('include/head.html'); ?>
    <body>
-<? require_once('include/navigation.html'); ?>
+<? showNavigation(); ?>
     <div class="panel-body">
+<? if(!isEmbedded()) { ?>
       <div class='panel panel-info'>
         <div class='panel-heading'>Search logs of a user</div>
         <div class='panel-body'>
@@ -19,6 +21,7 @@
           </form>
         </div>
       </div>
+<? } ?>
 <?
   if((isset($_GET['username']) && $_GET['username'] != '') || getSessionUser() != "") {
     if(isset($_GET['username']) && $_GET['username'] != '') {
