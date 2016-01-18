@@ -40,4 +40,11 @@
       case '5': return $prefix.' <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>';
     }
   }
+
+  function countryToImage($country) {
+    if($country == '') {
+      return '';
+    }
+    return "<img class='flagSmall' src='icons/countries/$country.gif'/>";
+  }
 ?>

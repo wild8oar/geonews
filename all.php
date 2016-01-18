@@ -45,6 +45,7 @@
                           geocache.gc,
                           geocache.difficulty,
                           geocache.terrain,
+                          geocache.country,
                           geocache.url,
                           type.type as 'type.type',
                           log.created,
@@ -93,12 +94,14 @@
     $type = $row['type.type'];
     $difficulty = $row['difficulty'];
     $terrain = $row['terrain'];
+    $country = $row['country'];
     $url = $row['url'];
     $logType = $row['type'];
 
     $gif = determineTypeIcon($type);
     $difficultyString = ratingToStars("D:", $difficulty);
     $terrainString = ratingToStars("T:", $terrain);
+    $countryImage = countryToImage($country);
     $logType = determineLogTypeIcon($logType);
 
     $images = DB::queryFirstColumn("SELECT
@@ -108,16 +111,16 @@
                                          WHERE
                                            image.log = %i", $logId);
 
-    printLogEntry($name, $gc, $gif, $created, $log, $username, $logType, $difficultyString, $terrainString, $url, $sessionResults, $images);
+    printLogEntry($name, $gc, $gif, $created, $log, $username, $logType, $difficultyString, $terrainString, $countryImage, $url, $sessionResults, $images);
   }
 
-  function printLogEntry($name, $gc, $gif, $created, $log, $username, $logType, $difficulty, $terrain, $url, $sessionResults, $images) {
+  function printLogEntry($name, $gc, $gif, $created, $log, $username, $logType, $difficulty, $terrain, $countryImage, $url, $sessionResults, $images) {
     if($created == date('d.m.Y')) {
       echo "<div class='panel panel-primary'>";
-      echo "<div class='panel-heading'><a style='color: white;' href='$url'><b>$name</b> - $gc</a> <img src='icons/$gif' width='23px' /> ($difficulty $terrain)</div>";
+      echo "<div class='panel-heading'><a style='color: white;' href='$url'><b>$name</b> - $gc</a> <img src='icons/$gif' width='23px' /> ($difficulty $terrain) $countryImage</div>";
     } else {
       echo "<div class='panel panel-info'>";
-      echo "<div class='panel-heading'><a href='$url'><b>$name</b> - $gc</a> <img src='icons/$gif' width='23px' /> ($difficulty $terrain)</div>";
+      echo "<div class='panel-heading'><a href='$url'><b>$name</b> - $gc</a> <img src='icons/$gif' width='23px' /> ($difficulty $terrain) $countryImage</div>";
     }
     echo "<div class='panel-body'>$log</div>";
     if(!empty($images)) {

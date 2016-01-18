@@ -23,3 +23,13 @@
     height: 70px;
     padding-top: 5px;
 }
+.flagSmall {
+  border-radius: 23px;
+  border: 1px solid black;
+  display: inline-block;
+  width: 23px;
+  height: 23px;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}

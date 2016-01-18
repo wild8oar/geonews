@@ -21,6 +21,7 @@
     $typeId = DB::queryFirstField("SELECT id FROM type WHERE type=%s LIMIT 1", $type);
     $difficulty = (int)$cache->difficulty;
     $terrain = (int)$cache->terrain;
+    $country = (string)$cache->country;
     $url = (string)$wpt->url;
 //    l("url $url");
 //    l($cache->logs);
@@ -59,6 +60,7 @@
         'lon' => $lon,
         'difficulty' => $difficulty,
         'terrain' => $terrain,
+        'country' => $country,
         'url' => $url
       ));
 //      l("inserted geocache $gc");
