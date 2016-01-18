@@ -1,25 +1,27 @@
 function addStationsFromDb(username) {
-  var xmlHttp = new XMLHttpRequest();
-  xmlHttp.open("GET", "api.php?username=" + encodeURIComponent(username), false); // false for synchronous request
-  xmlHttp.send(null);
-  var obj = JSON.parse(xmlHttp.responseText);
-
-  if(obj.length == 0) {
-    $("#no-gpx").show();
-  } else {
-    showMapAndPrintMarkers(obj);
-  }
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "api.php?username=" + encodeURIComponent(username), true);
+  xhr.onload = function(e) {
+    var obj = JSON.parse(xhr.responseText);
+    if(obj.length == 0) {
+      $("#no-gpx").show();
+    } else {
+      showMapAndPrintMarkers(obj);
+    }
+  };
+  xhr.send(null);
 }
 
 function addRecentStationsFromDb(username) {
-  var xmlHttp = new XMLHttpRequest();
-  xmlHttp.open("GET", "api.php?username=" + encodeURIComponent(username) + "&recent=true", false); // false for synchronous request
-  xmlHttp.send(null);
-  var obj = JSON.parse(xmlHttp.responseText);
-
-  if(obj.length != 0) {
-    showMapAndPrintMarkers(obj);
-  }
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "api.php?username=" + encodeURIComponent(username) + "&recent=true", true);
+  xhr.onload = function(e) {
+    var obj = JSON.parse(xhr.responseText);
+    if(obj.length != 0) {
+      showMapAndPrintMarkers(obj);
+    }
+  };
+  xhr.send(null);
 }
 
 function showMapAndPrintMarkers(obj) {
