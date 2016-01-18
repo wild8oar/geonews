@@ -27,11 +27,18 @@
   } else {
 ?>
     <div id="map" hidden="hidden"></div>
-    <script type="text/javascript">
-        $('#map').height($(window).height() - 72);
-        addStationsFromDb(<? echo "'".getSessionUser()."'"; ?>);
-    </script>
+    <? if(isEmbedded()) { ?>
+      <script type="text/javascript">
+          $('#map').height($(window).height());
+          addStationsFromDb(<? echo "'".getSessionUser()."'"; ?>);
+      </script>
+    <? } else { ?>
+      <script type="text/javascript">
+          $('#map').height($(window).height() - 72);
+          addStationsFromDb(<? echo "'".getSessionUser()."'"; ?>);
+      </script>
 <?
+    }
   }
 ?>
     </body>
