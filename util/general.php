@@ -19,10 +19,10 @@
 
     if($created == date('d.m.Y')) {
       echo "<div class='panel panel-primary'>";
-      echo "<div class='panel-heading'><a style='color: white;' href='$url'><b>$name</b> - $gc</a> <img src='icons/$gif' width='23px' /> ($difficulty $terrain) $countryImage</div>";
+      echo "<div class='panel-heading'><a style='color: white;' href='$url'><b>$name</b> - $gc</a> <img src='icons/$gif' width='20px' /> ($difficulty $terrain) $countryImage</div>";
     } else {
       echo "<div class='panel panel-info'>";
-      echo "<div class='panel-heading'><a href='$url'><b>$name</b> - $gc</a> <img src='icons/$gif' width='23px' /> ($difficulty $terrain) $countryImage</div>";
+      echo "<div class='panel-heading'><a href='$url'><b>$name</b> - $gc</a> <img src='icons/$gif' width='20px' /> ($difficulty $terrain) $countryImage</div>";
     }
     echo "<div class='panel-body'>$log</div>";
     if(!empty($images)) {
