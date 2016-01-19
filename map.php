@@ -34,7 +34,7 @@
       </script>
     <? } else { ?>
       <script type="text/javascript">
-          $('#map').height($(window).height() - 72);
+          $('#map').height($(window).height() - 52);
           addStationsFromDb(<? echo "'".getSessionUser()."'"; ?>);
       </script>
 <?

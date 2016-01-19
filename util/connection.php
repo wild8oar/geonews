@@ -14,7 +14,7 @@
     if(isset($_COOKIE['geonews'])) {
       echo $_COOKIE['geonews'];
     } else {
-      echo "not logged in";
+      echo "Log in";
     }
   }
 
@@ -33,5 +33,4 @@
       echo "<li><a href='setUsername.php?username=$urlEncodedUsername'>$username</a></li>";
     }
   }
-
 ?>

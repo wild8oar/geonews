@@ -2,7 +2,6 @@ html, body {
   margin: 0;
 }
 
-
 a[href^="https://maps.google.com/maps"]{display:none !important}
 a[title="Report errors in the road map or imagery to Google"]{display:none !important}
 a[title="Click to see this area on Google Maps"]{display:none !important}

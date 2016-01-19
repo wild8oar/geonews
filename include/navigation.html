@@ -2,33 +2,30 @@
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">GeoNews</a>
     </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <div class="collapse navbar-collapse" id="navbar">
       <ul class="nav navbar-nav">
-        <li><a href="index.php"><i class="fa fa-rss fa-2x"></i></a></li>
-        <li><a href="all.php"><i class="fa fa-file-text-o fa-2x"></i></a></li>
-        <li><a href="today.php"><i class="fa fa-calendar fa-2x"></i></a></li>
-        <li><a href="map.php"><i class="fa fa-map fa-2x"></i></a></li>
-        <li><a href="chart.php"><i class="fa fa-bar-chart fa-2x"></i></a></li>
-        <li><a href="#"><? printLoggedInUser(); ?></a></li>
+        <li style="font-size: 17px;"><a href="index.php"><i class="fa fa-rss"></i> Feed</a></li>
+        <li style="font-size: 17px;"><a href="all.php"><i class="fa fa-file-text-o"></i> Logs</a></li>
+        <li style="font-size: 17px;"><a href="today.php"><i class="fa fa-calendar"></i> Today</a></li>
+        <li style="font-size: 17px;"><a href="map.php"><i class="fa fa-map"></i> Map</a></li>
+        <li style="font-size: 17px;"><a href="chart.php"><i class="fa fa-bar-chart"></i> Statistics</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="editFeed.php"><i class="fa fa-sliders fa-2x"></i></a></li>
-        <li><a href="upload.php"><i class="fa fa-cloud-upload fa-2x"></i></a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class='fa fa-user fa-2x'></i></a>
+        <li style="font-size: 17px;"><a href="settings.php"><i class="fa fa-sliders"></i> Settings</a></li>
+        <li style="font-size: 17px;"><a href="upload.php"><i class="fa fa-cloud-upload"></i> Upload your finds</a></li>
+        <li style="font-size: 17px;" class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class='fa fa-user'></i> <? printLoggedInUser(); ?></a>
           <ul class="dropdown-menu"><? echo printAllUsers(); ?></ul>
         </li>
-        <li><a href="crawl.php"><i class="fa fa-cog fa-2x"></i></a></li>
+        <li style="font-size: 17px;"><a href="crawl.php"><i class="fa fa-cogs"></i> Crawl</a></li>
       </ul>
     </div>
   </div>
