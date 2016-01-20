@@ -12,20 +12,28 @@
 
     <div class="collapse navbar-collapse" id="navbar">
       <ul class="nav navbar-nav">
-        <li style="font-size: 17px;"><a href="index.php"><i class="fa fa-rss"></i> Feed</a></li>
-        <li style="font-size: 17px;"><a href="all.php"><i class="fa fa-file-text-o"></i> Logs</a></li>
-        <li style="font-size: 17px;"><a href="today.php"><i class="fa fa-calendar"></i> Today</a></li>
-        <li style="font-size: 17px;"><a href="map.php"><i class="fa fa-map"></i> Map</a></li>
-        <li style="font-size: 17px;"><a href="chart.php"><i class="fa fa-bar-chart"></i> Statistics</a></li>
+        <li class="hidden-xs hidden-sm"><a href="index.php"><i class="fa fa-rss"></i> Feed</a></li>
+        <li class="hidden-md hidden-lg"><a href="index.php"><i class="fa fa-rss"></i></a></li>
+        <li class="hidden-xs hidden-sm"><a href="all.php"><i class="fa fa-file-text-o"></i> Logs</a></li>
+        <li class="hidden-md hidden-lg"><a href="all.php"><i class="fa fa-file-text-o"></i></a></li>
+        <li class="hidden-xs hidden-sm"><a href="today.php"><i class="fa fa-calendar"></i> Today</a></li>
+        <li class="hidden-md hidden-lg"><a href="today.php"><i class="fa fa-calendar"></i></a></li>
+        <li class="hidden-xs hidden-sm"><a href="map.php"><i class="fa fa-map"></i> Map</a></li>
+        <li class="hidden-md hidden-lg"><a href="map.php"><i class="fa fa-map"></i></a></li>
+        <li class="hidden-xs hidden-sm"><a href="chart.php"><i class="fa fa-bar-chart"></i> Statistics</a></li>
+        <li class="hidden-md hidden-lg"><a href="chart.php"><i class="fa fa-bar-chart"></i></a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li style="font-size: 17px;"><a href="settings.php"><i class="fa fa-sliders"></i> Settings</a></li>
-        <li style="font-size: 17px;"><a href="upload.php"><i class="fa fa-cloud-upload"></i> Upload your finds</a></li>
-        <li style="font-size: 17px;" class="dropdown">
+        <li class="hidden-xs hidden-sm"><a href="settings.php"><i class="fa fa-sliders"></i> Settings</a></li>
+        <li class="hidden-md hidden-lg"><a href="settings.php"><i class="fa fa-sliders"></i></a></li>
+        <li class="hidden-xs hidden-sm"><a href="upload.php"><i class="fa fa-cloud-upload"></i> Upload my finds</a></li>
+        <li class="hidden-md hidden-lg"><a href="upload.php"><i class="fa fa-cloud-upload"></i></a></li>
+        <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class='fa fa-user'></i> <? printLoggedInUser(); ?></a>
           <ul class="dropdown-menu"><? echo printAllUsers(); ?></ul>
         </li>
-        <li style="font-size: 17px;"><a href="crawl.php"><i class="fa fa-cogs"></i> Crawl</a></li>
+        <li class="hidden-xs hidden-sm"><a href="crawl.php"><i class="fa fa-cogs"></i> Crawl</a></li>
+        <li class="hidden-md hidden-lg"><a href="crawl.php"><i class="fa fa-cogs"></i></a></li>
       </ul>
     </div>
   </div>
