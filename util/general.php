@@ -5,6 +5,14 @@
     }
   }
 
+  function printBodyTag() {
+    if(isEmbedded()) {
+      echo '<body>';
+    } else {
+      echo '<body style="padding-top: 50px;">';
+    }
+  }
+
   function isEmbedded() {
     return isset($_GET['embedded']) && $_GET['embedded'];
   }

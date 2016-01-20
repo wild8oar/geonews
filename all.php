@@ -6,9 +6,11 @@
 ?>
 <!DOCTYPE html>
 <html>
-<? require_once('include/head.html'); ?>
-   <body>
-<? showNavigation(); ?>
+<?
+  require_once('include/head.html');
+  printBodyTag();
+  showNavigation();
+?>
     <div class="panel-body">
 <? if(!isEmbedded()) { ?>
       <div class='panel panel-info'>

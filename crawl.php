@@ -4,9 +4,11 @@
 ?>
 <!DOCTYPE html>
 <html>
-<? require_once('include/head.html'); ?>
-  <body>
-<? require_once('include/navigation.html'); ?>
+<?
+  require_once('include/head.html');
+  printBodyTag();
+  showNavigation();
+?>
     <div class="panel-body">
       <div class='panel panel-info'>
         <div class='panel-heading'>Result of crawl</div>

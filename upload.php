@@ -2,12 +2,23 @@
   require_once('util/general.php');
   require_once('util/connection.php');
   require_once('util/logger.php');
+
+  if(isset($_POST["submit"])) {
+    $target_file = realpath(dirname(__FILE__))."/pocketquery.gpx";
+    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+      header("Location: processFile.php");
+    } else {
+      echo "Sorry, there was an error uploading your file.";
+    }
+  }
 ?>
 <!DOCTYPE html>
 <html>
-<? require_once('include/head.html'); ?>
-  <body>
-<? showNavigation(); ?>
+<?
+  require_once('include/head.html');
+  printBodyTag();
+  showNavigation();
+?>
    <div class="panel-body">
 <?
   if(getSessionUser() == "") {
@@ -46,13 +57,3 @@
     </div>
   </body>
 </html>
-<?
-  if(isset($_POST["submit"])) {
-    $target_file = realpath(dirname(__FILE__))."/pocketquery.gpx";
-    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-      header("Location: processFile.php");
-    } else {
-      echo "Sorry, there was an error uploading your file.";
-    }
-  }
-?>
