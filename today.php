@@ -110,19 +110,7 @@
     $terrainString = ratingToStars("T:", $terrain);
     $logType = determineLogTypeIcon($logType);
 
-    printLogEntry($name, $gc, $gif, $created, $log, $username, $logType, $difficultyString, $terrainString, $url, $sessionResults);
-  }
-
-  function printLogEntry($name, $gc, $gif, $created, $log, $username, $logType, $difficulty, $terrain, $url, $sessionResults) {
-    echo "<div class='panel panel-info'>";
-    echo "<div class='panel-heading'><a href='$url'><b>$name</b> - $gc</a> <img src='icons/$gif' width='23px' /> ($difficulty $terrain)</div>";
-    echo "<div class='panel-body'>$log</div>";
-    if(in_array($gc, $sessionResults) && $username != getSessionUser()) {
-      echo "<div class='panel-footer'>$username $logType $created. (You <i class='fa fa-thumbs-up'></i> this one too.)</div>";
-    } else {
-      echo "<div class='panel-footer'>$username $logType $created.</div>";
-    }
-    echo "</div>";
+    printLogEntry($name, $gc, $gif, $created, $log, $logId, $username, $logType, $difficultyString, $terrainString, $countryImage, $url, $sessionResults);
   }
 ?>
     </div>
