@@ -1,4 +1,5 @@
 <?
+  require_once('util/general.php');
   require_once('util/connection.php');
   require_once('util/logger.php');
 ?>
