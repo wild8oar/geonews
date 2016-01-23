@@ -28,3 +28,12 @@
 .navbar-collapse.in {
   padding-left: 30px;
 }
+li {
+  font-size: 17px;
+}
+.navbar-default {
+  border-bottom: 1px solid gray;
+}
+.panel-primary > .panel-heading > a {
+  color: white;
+}

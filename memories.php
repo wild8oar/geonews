@@ -46,7 +46,7 @@
                               user.username = %s AND
                               month(curdate()) = month(created) AND
                               day(curdate()) = day(created) AND
-                              curdate() != created
+                              year(curdate()) != year(created)
                             ORDER BY
                               log.created DESC,
                               log.id DESC", getSessionUser());
@@ -76,11 +76,11 @@
                           geocache.terrain,
                           geocache.country,
                           geocache.url,
-                          type.type as 'type.type',
+                          type.type AS 'type.type',
                           log.created,
                           logtype.type,
                           log.log,
-                          log.id as 'log.id',
+                          log.id AS 'log.id',
                           user.username
                         FROM
                           geocache, log, logtype, user, type
@@ -92,7 +92,7 @@
                           user.username = %s AND
                           month(curdate()) = month(created) AND
                           day(curdate()) = day(created) AND
-                          curdate() != created
+                          year(curdate()) != year(created)
                         ORDER BY
                           log.created DESC,
                           log.id ASC", $username);

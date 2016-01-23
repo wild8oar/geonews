@@ -1,7 +1,8 @@
 <?
   require_once('meekro.php');
+  require_once('util/passwords.php');
   DB::$user = 'musharos_geonews';
-  DB::$password = 'GaU+7zUa+3TU#3d';
+  DB::$password = $DB_PASSWORD;
   DB::$dbName = 'musharos_geonews';
 
   function printLoggedInUser() {

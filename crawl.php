@@ -2,6 +2,8 @@
   require_once('util/general.php');
   require_once('util/connection.php');
   require_once('util/logger.php');
+  require_once('util/convert.php');
+  ob_implicit_flush(true);
 ?>
 <!DOCTYPE html>
 <html>
@@ -15,37 +17,29 @@
         <div class='panel-heading'>Result of crawl</div>
         <div class='panel-body'>
 <?
-  ob_implicit_flush(true);
+  $cookie = tempnam('tmp','cookie');
 
-//  resetDb();
+  $handle = curl_init('https://www.geocaching.com/login/default.aspx?RESETCOMPLETE=y&redir=%2fplay');
+  curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($handle, CURLOPT_COOKIEJAR, $cookie);
+  curl_setopt($handle, CURLOPT_USERAGENT,'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36');
+  curl_setopt($handle, CURLOPT_POSTFIELDS, "__EVENTTARGET=&__EVENTARGUMENT=&__VIEWSTATE=zBL0KC%2FuHhlZAVhAYNvkIOJxI1WmxzdBcRztj85NfHI%2FemS6hMbi4Pm70ciJ0Oa%2BZuFSJb823UnT%2F%2F7BpMIp%2FLkbWyo7yuY%2BWGUVEDQsO3ZOFiWPgN6sH%2BSnDCi8USIZ5zw0NYR%2Bm5DurcT%2FGqpkehiao%2BEZ3xh0R1c%2B3zdH3EzEx9HsWXXT%2FuL4PotGi6qMHzM1PIJWsUFTupk234a9B9zGMK7HqvSA4TxmTqYohGhn90URSJOGzvk2xkIOGqwFeiQ56UAjb2gddR4bHpGWUc8gg6CyD5SWxJ0z%2FUZ0Ua3un55FRGXzFlmFk6NLAsPgZQGPzMt3BYDbIdx32H3aPH7844fByvPLf9HueN5psWOltOmSj0af3dQEfsIXYgxBYQq5p6Hxu%2BOb%2F1tbZbwmbTn3EZ6LkKIU7OSPJR9qzOSsVrHMLQXYfyOMCyVdeADr8Tr%2BS02OQhHxoB%2BxAQGEVZJ9A98yFmc4evvJNlLMp2qAq%2FwYzYTOCtTjwOqqUsN4l4tfLE2La3MnjTGx217LknVol0Z6Qlb8ITuzpgxDWt%2BmlA640gYCuYD2DfFC2zbe768dj%2Bn1eUdOekB%2FyK%2F7FEwXFvcoMngpaffzQvqp5t7O4HM5MrZEbAUT91xPB%2BoQOdwUzJENFETzBFQB9DbXfQSBW%2FsxX0pJDzv%2FRruOZ3y%2BN5qCHKEAhpLPHm3aCzD2Vpr0Gs3rTdws58UcxOnKwQoRJ9JwbeBLuVQf%2BL%2FnNELzeqjvh0vw9KX9YgrNxAPKZUiVyzjB1ksPrWBPOBMP3l5C22l%2FtXCGwkoWndff%2Fi%2BfBHcxTbagXpPA1fScPriXaiuBcynDKGZOIsc4PIaedts6t1%2BZ%2Bbm59fBhis9IywLTguKp%2FWQBTVTeEMN7qmtkkwYeWNVDLAjJY8uE3RgdackM2Vt3qBYXg0pBxDxuayWzjR0Zo%2BDriXSSwKKjzP0ewaXtC%2Fx22gtU%2FdKcmzc7n8TRYB83VclnAd44eRJ10qbPtybz7h%2BoNh1oo09rw8P98ierWaOOJthX1SbFqhX9hskS8X61NuONecI%2B2mSgEcsr1YMYRP2g9s0TIbaTVjp8TMQzyugkTElLbImWmtu5P3FSz72RORHAFBag1BrRMy04dwZcyQtiKKXj8LFaMzzhOQaRNQUFPt2xaQJrdjCwGojdPH1nvfwgcvmsXr1wA9jAN6bIp%2FI2aQ9KN4MItC8QRbYL9XTzBkeUmrYmeghApGala9XuiwpW4gUsq4pxUMBiq3rjwkaEnj7ZBmKNVF%2BYYN4hiUcAq9mQcHbVyhw2IhDbuT%2FsqVgyJL6amYAWaWx9nWRl9zQk%2BPU2xFKLVMS8F9vD4%2BCfSV%2BpVup4xIHTrCYNIVTnnkgMiZo5nCDWKxjtrKVhk6%2F52DlSRfBIx6eHa%2FjZTrHA62aXjq5AOyWtXBMpGQ%2Fy0nIhYFuOh86weW1ZcZVM8E%2BrzhlyzewNGZJFROFO9YCjxAEwnaApirl4GZ1hR7rn41nEG0YEoWPLbHKaRva8TnqioAgjAi2iARb%2BjDOwZkPkVk%2BWeYPlYNCxctud7vlWHr9HDQpz%2BvWoSB4Eq5eC46NQ2m3ofckm4lKW1w1EuauhPEJJHASzIgY1ebLS5BM41EPXQ19FyOmwwUtpetVjKcGr3SzsBhxh0UNXskEKNQe%2FppFtTxFBUTDOeLSIpusFw0RxZWYjf0o3OSSCDLWsAFTZvZcDylz4UAWaxY%2Bmq71rtHSFzeKvYdUOkZIFMxNAviN4PDjWqjEAKOjHdohSH1kv6iTU7DU7%2FQ0p%2B%2FUW3w%2Fy7Xv64agR8j4tdbG3I%2FuH%2FTo9y5mzIDDYB1jHEjNtLd6msipAgX847YQ74NSJlkADITfVv3p8toVzUEJp%2F8HwKbf8U5uZ9Zn2UAcWXtC%2BAiqKlJss%2Fhj1NcrjzK3JNk36LtWN1fyZB4BXvelhXlSvky5tzWNLNJYcoRNO3kpvEAapG4vPUlrQoj%2FiLUgZ8MyNPWQhdm2UjCe9oOPk31XhHkcoH2G9Ee%2BDNx0oOm7IT%2BfvMfbYlMBxICNDKoF9KNGQLjD321Iv51akHQIQZkuktPInt%2B51lurBV%2FALDUMplXKt8VKVlgmpJjUYIwBRrsvmSbKsjHdPrQk4KY9%2F51SgCWNfEAJ1K9jFBsQh2TXPkcdqEy1w7IJBTGVTEsRaMAc06sfFslb7iOuGQHqnGGVK1VwQvVl8zLmntYnTgpMuYoT944JVV%2BxvUUWbqrKYJujaZEbvwtnyKdcL9I9irdKNWz8CBJna9XO43P67%2Bqt4EK8rgj3pK1VWa8u1QQoHYKP1hEqWaGgsYUzbQX9xdrvitw%2Bs5ZGm0natk2FC6TWJpqhu%2FgksQsMtV6SITDEofdl6uMinNklVR8c9A1EEF%2FHt9ozr5Ji9REwaq4Gj1yr3DN0KM2tDvn1ox%2FMpc%2BXT40th8R8TXGeVRhoN7GWKrmX1zmyIJsUvjIe8mEAGWo4WbU1ysg9LB9Cx0nIs2OHFjiA5JIjCk9OxyJLCXuIITXScXthNW6oh2B85lwI1MCDiVq%2BziNT3A%2FXT2uUoOyOHXx0Fl6HkLEJGK0RMdYQXiJM7MJMcHS30gCM%2BqCRGF7d2vl8sGLzRgyXNDKd19mZgSPjGharrOBwwhAk%2BhPXAGWlHj0koGpAWQAigREkhyB6AaIoPirqzznNFRRhYzrq3GIbtCWutDS95pfdLyqWe3vCUugjKs3HZrv%2FtcqSXe62FYTdUJ8dgvry%2BnBr1ioGqErgCRuWIb%2FvP2zgJ%2BuhLO8%2BvGbeEV7YJ%2ByXR5r7%2FUitFK4W4pQCjc5%2F9QKJuOZNEmi3QQ77femp4yq04WtVHfBnI574OjTig%2BK2p6Se2rqWTZQ1nILoF1HCjgkXeV2zxn7usLXTtXMkXVbLiRBPmSXHPOqRMMJkTA2NQONWWB66wBwSaRvst0kmxPnXSKOB%2BT84PnSy4wFikCUm%2FmL3eWoQZbMuq8wx%2BjEpi%2BD1Y%2B9DsYe5EEsYHubq8JWAQxxsbgs7rKqeoPeDRieAkZ%2FWIdmTfLHicEfdw1Guqb3cnGH0wUfZRhGQ%2Fafrsvrc7c3eM1R8d3agF0n%2FFzFsu0qZzHcZhE2ZhGqpJm%2BFb8dcOppSHnE7bmEms4nsouQE0X0ixEb5hA9eWa2WXj3WiP22ciT6nz2ygCeVQL6uj%2B3FyyKWDCR%2BkgvR0Xj84M%2BMsC2BoNfpNmJjf%2BefJJuHPsJuLBNEEZVvhRiSOO%2FwcD7bGhalBhT5V9e1QNjliWRsFjqT9Rw%3D%3D&__VIEWSTATEGENERATOR=25748CED&ctl00%24ContentBody%24tbUsername=$GC_USER&ctl00%24ContentBody%24tbPassword=$GC_PASSWORD&ctl00%24ContentBody%24btnSignIn=Sign+In");
+  curl_exec($handle);
 
-  $users = DB::query("SELECT id, username FROM user");
-  foreach ($users as $user) {
-    gatherAllLogsForUser($user['id'], $user['username']);
-  }
+  foreach (DB::query("SELECT id, username FROM user") as $user) {
+    $username = $user['username'];
+    $userId = $user['id'];
+    $urlEncodedUsername = urlencode($username);
 
-  function html($url) {
-    $handle = curl_init($url);
+    $handle = curl_init("https://www.geocaching.com/seek/nearest.aspx?ul=$urlEncodedUsername&sortdir=desc&sort=lastfound");
     curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
-    return curl_exec($handle);
-  }
+    curl_setopt($handle, CURLOPT_COOKIEFILE, $cookie);
+    curl_setopt($handle, CURLOPT_USERAGENT,'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36');
+    $html = curl_exec($handle);
 
-  function doc($html) {
     libxml_use_internal_errors(true);
     $doc = new DOMDocument();
     $doc->loadHTML($html);
-    return $doc;
-  }
-
-  function gatherAllLogsForUser($userId, $username) {
-    $urlEncodedUsername = urlencode($username);
-    $gatheredLinks = gatherLinks("https://www.geocaching.com/seek/nearest.aspx?ul=$urlEncodedUsername&sortdir=desc&sort=lastfound");
-    retrieveAllLogs($gatheredLinks, $userId, $username);
-  }
-
-  function gatherLinks($url) {
-    $html = html($url);
-    $doc = doc($html);
 
     $links = $doc->getElementsByTagName('a');
     $gatheredLinks = array();
@@ -64,17 +58,61 @@
         }
       }
     }
-    return $gatheredLinks;
-  }
-
-  function retrieveAllLogs($gatheredLinks, $userId, $username) {
     foreach($gatheredLinks as $gc => $url) {
-//      l("parsing $url");
-      $html = html($url);
+//    var_dump($gatheredLinks);
+//    if($username == "Adi&Ko") {
+//      $url = "https://www.geocaching.com/seek/cache_details.aspx?wp=GC5PMWP&title=grossweid";
+//      $url = "https://www.geocaching.com/seek/cache_details.aspx?wp=GC2RYJZ&title=lesestoff";
+//      $gc = 'GC2RYJZ';
+//      $url = "https://www.geocaching.com/seek/cache_details.aspx?wp=GC5XY40&title=kanzeli";
+//      $gc = 'GC5XY40';
+      l("$url");
+
+      $handle = curl_init($url);
+      curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($handle, CURLOPT_COOKIEFILE, $cookie);
+      curl_setopt($handle, CURLOPT_USERAGENT,'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36');
+      $page = curl_exec($handle);
+      $lines = explode(PHP_EOL, $page);
+      unset($gps);
+      unset($lat);
+      unset($lon);
+      if(strpos($page, "UTM:")) {
+        foreach($lines as $line) {
+          if(strpos($line, "UTM:")) {
+            $gps = $line;
+            break;
+          }
+        }
+      }
+
+      if(isset($gps) && $gps != '') {
+        l("found gps: $gps");
+        $zone = substr(trim(preg_split('/E /', preg_split('/UTM: /', $gps)[1])[0]), 0, -1);
+        $utmLat = trim(preg_split('/ N /', preg_split('/ E /', $gps)[1])[0]);
+        $utmLon = trim(preg_split('/</', preg_split('/ N /', $gps)[1])[0]);
+
+        $latLon = utmToLatLon($utmLon, $utmLat, $zone);
+        $lat = $latLon['lat'];
+        $lon = $latLon['lng'];
+        l("converted lat: " + $lat);
+        l("converted lon: " + $lon);
+      } else {
+        l("found no gps");
+      }
+
+      $handle = curl_init($url);
+      curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($handle, CURLOPT_COOKIEFILE, $cookie);
+      curl_setopt($handle, CURLOPT_USERAGENT,'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36');
+      $html = curl_exec($handle);
+
       $images = array();
 
       $lines = explode(PHP_EOL, $html);
+//      l($html);
       if (strpos($html, $username)) {
+        l("normal");
         foreach($lines as $line) {
           if(strpos($line, 'ctl00_ContentBody_uxLegendScale')) {
             $difficulty = retrieveDifficulty($line);
@@ -90,9 +128,12 @@
 
           if(substr($line, 0, strlen('initalLogs')) == 'initalLogs') {
             $decoded = json_decode(substr(substr($line, 13), 0, -2), true);
+            //var_dump($decoded);
             foreach($decoded['data'] as $data) {
               if($data['UserName'] == $username) {
+                l($data['Created']);
                 $created = transformDate($data['Created']);
+                l($created);
                 $finds = $data['GeocacheFindCount'];
                 $log = $data['LogText'];
                 $logType = $data['LogType'];
@@ -108,6 +149,7 @@
           }
         }
       } else if(!strpos($html, 'Premium Member Only Cache')) {
+        l("old one");
         foreach($lines as $line) {
           if(strpos($line, 'ctl00_ContentBody_uxLegendScale')) {
             $difficulty = retrieveDifficulty($line);
@@ -122,11 +164,12 @@
             l("retrieved cache name $cacheName");
           }
 
-          $created = date('Y-m-d');
+          $created = date('Y-m-d')."T".date('G:i:s')."Z";
           $log = 'No log found.';
           $logType = 'Found it';
         }
       } else { // premium
+        l("premium");
         $lines = explode(PHP_EOL, $html);
         $nextDifficulty = false;
         $nextTerrain = false;
@@ -153,7 +196,7 @@
             $nextTerrain = true;
           }
         }
-        $created = date('Y-m-d');
+        $created = date('Y-m-d')."T".date('G:i:s')."Z";
         $log = 'Premium.';
         $logType = 'Found it';
       }
@@ -183,6 +226,8 @@
           'difficulty' => $difficulty,
           'terrain' => $terrain,
           'country' => $country,
+          'lat' => $lat,
+          'lon' => $lon,
           'url' => $url
         ));
       } else {
@@ -294,7 +339,19 @@
   }
 
   function transformDate($date) {
-    return substr($date, 6, 4).'-'.substr($date, 0, 2).'-'.substr($date, 3, 2);
+    $parts = explode('/', $date);
+    $month = $parts[0];
+    $day = $parts[1];
+    $year = $parts[2];
+    return "$year-$month-$day"."T".date('G:i:s')."Z";
+    /*
+        // with premium enabled user
+        $parts = explode(' ', $date);
+        $day = $parts[0];
+        $month = date_parse($parts[1])['month'];
+        $year = $parts[2];
+        return "$year-$month-$day"."T".date('G:i:s')."Z";
+    */
   }
 ?>
         </div>

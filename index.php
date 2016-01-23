@@ -61,8 +61,10 @@
                                             log.created DESC,
                                             log.id ASC", getSessionUser());
 
+  $found = false;
   foreach ($results as $row) {
     if(in_array($row['user.id'], $feedUserIds)) {
+      $found = true;
       $name = $row['name'];
       $gc = $row['gc'];
       $created = substr($row['created'], 8, 2).'.'.substr($row['created'], 5, 2).'.'.substr($row['created'], 0, 4);
@@ -78,6 +80,14 @@
 
       printLogEntry($name, $gc, $type, $created, $log, $logId, $username, $logType, $difficulty, $terrain, $country, $url, $sessionResults);
     }
+  }
+  if(!$found) {
+?>
+  <div class='panel panel-info'>
+    <div class='panel-heading'>Empty feed</div>
+    <div class='panel-body'>Your feed is empty, how about adding some users users <a href="settings.php">here</a>?</div>
+  </div>
+<?
   }
 ?>
     </div>
