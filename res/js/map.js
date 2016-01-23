@@ -1,27 +1,19 @@
 function addStationsFromDb(username) {
-  var xhr = new XMLHttpRequest();
-  xhr.open("GET", "api.php?username=" + encodeURIComponent(username), true);
-  xhr.onload = function(e) {
-    var obj = JSON.parse(xhr.responseText);
-    if(obj.length == 0) {
+  $.getJSON("api.php?username=" + encodeURIComponent(username), function(data) {
+    if(data.length == 0) {
       $("#no-gpx").show();
     } else {
-      showMapAndPrintMarkers(obj);
+      showMapAndPrintMarkers(data);
     }
-  };
-  xhr.send(null);
+  });
 }
 
 function addRecentStationsFromDb(username) {
-  var xhr = new XMLHttpRequest();
-  xhr.open("GET", "api.php?username=" + encodeURIComponent(username) + "&recent=true", true);
-  xhr.onload = function(e) {
-    var obj = JSON.parse(xhr.responseText);
-    if(obj.length != 0) {
-      showMapAndPrintMarkers(obj);
+  $.getJSON("api.php?username=" + encodeURIComponent(username) + "&recent=true", function(data) {
+    if(data.length != 0) {
+      showMapAndPrintMarkers(data);
     }
-  };
-  xhr.send(null);
+  });
 }
 
 function showMapAndPrintMarkers(obj) {
@@ -55,118 +47,43 @@ function addMarkerAndFitBounds(point, map, markerBounds, name, gc, type, created
     size = new google.maps.Size(50, 50);
   }
 
-  var traditional = {
-    url: 'res/icons/traditional.png',
+  var it = {
     size: size,
     scaledSize: new google.maps.Size(25, 25),
     origin: new google.maps.Point(0,0),
     anchor: new google.maps.Point(13, 13)
   }
-
-  var multi = {
-    url: 'res/icons/multi.png',
-    size: size,
-    scaledSize: new google.maps.Size(25, 25),
-    origin: new google.maps.Point(0,0),
-    anchor: new google.maps.Point(13, 13)
-  }
-
-  var wherigo = {
-    url: 'res/icons/wherigo.png',
-    size: size,
-    scaledSize: new google.maps.Size(25, 25),
-    origin: new google.maps.Point(0,0),
-    anchor: new google.maps.Point(13, 13)
-  }
-
-  var unknown = {
-    url: 'res/icons/unknown.png',
-    size: size,
-    scaledSize: new google.maps.Size(25, 25),
-    origin: new google.maps.Point(0,0),
-    anchor: new google.maps.Point(13, 13)
-  }
-
-  var virtual = {
-    url: 'res/icons/virtual.png',
-    size: size,
-    scaledSize: new google.maps.Size(25, 25),
-    origin: new google.maps.Point(0,0),
-    anchor: new google.maps.Point(13, 13)
-  }
-
-  var earth = {
-    url: 'res/icons/earthcache.png',
-    size: size,
-    scaledSize: new google.maps.Size(25, 25),
-    origin: new google.maps.Point(0,0),
-    anchor: new google.maps.Point(13, 13)
-  }
-
-  var letterbox = {
-    url: 'res/icons/letterbox.png',
-    size: size,
-    scaledSize: new google.maps.Size(25, 25),
-    origin: new google.maps.Point(0,0),
-    anchor: new google.maps.Point(13, 13)
-  }
-
-  var eventcache = {
-    url: 'res/icons/event.gif',
-    size: size,
-    scaledSize: new google.maps.Size(25, 25),
-    origin: new google.maps.Point(0,0),
-    anchor: new google.maps.Point(13, 13)
-  }
-
-  var webcam = {
-    url: 'res/icons/webcam.gif',
-    size: size,
-    scaledSize: new google.maps.Size(25, 25),
-    origin: new google.maps.Point(0,0),
-    anchor: new google.maps.Point(13, 13)
-  }
-
-  var unknownunknown = {
-    url: 'res/icons/unknown.gif',
-    size: size,
-    scaledSize: new google.maps.Size(25, 25),
-    origin: new google.maps.Point(0,0),
-    anchor: new google.maps.Point(13, 13)
-  }
-
-  var it;
 
   switch(type) {
     case 'Traditional Cache':
-      it = traditional;
+      it.url = 'res/icons/traditional.png';
       break;
     case 'Wherigo Cache':
-      it = wherigo;
+      it.url = 'res/icons/wherigo.png';
       break;
     case 'Unknown Cache':
-      it = unknown;
+      it.url = 'res/icons/unknown.png';
       break;
     case 'Virtual Cache':
-      it = virtual;
+      it.url = 'res/icons/virtual.png';
       break;
     case 'Multi-cache':
-      it = multi;
+      it.url = 'res/icons/multi.png';
       break;
     case 'Earthcache':
-      it = earth;
+      it.url = 'res/icons/earthcache.png';
       break;
     case 'Letterbox Hybrid':
-      it = letterbox;
+      it.url = 'res/icons/letterbox.png';
       break;
     case 'Event Cache':
-      it = eventcache;
+      it.url = 'res/icons/event.gif';
       break;
     case 'Webcam Cache':
-      it = webcam;
+      it.url = 'res/icons/webcam.gif';
       break;
     case 'unknown':
-      it = unknownunknown;
+      it.url = 'res/icons/unknown.gif';
       break;
   }
 

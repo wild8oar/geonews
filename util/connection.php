@@ -24,7 +24,7 @@
     foreach ($users as $user) {
       $username = $user['username'];
       $urlEncodedUsername = urlencode($username);
-      echo "<li><a href='setUsername.php?username=$urlEncodedUsername'>$username</a></li>";
+      echo "<li><a href='login.php?username=$urlEncodedUsername'>$username</a></li>";
     }
   }
 ?>

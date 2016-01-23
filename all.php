@@ -48,11 +48,11 @@
                           geocache.terrain,
                           geocache.country,
                           geocache.url,
-                          type.type as 'type.type',
+                          type.type AS 'type.type',
                           log.created,
                           logtype.type,
                           log.log,
-                          log.id as 'log.id',
+                          log.id AS 'log.id',
                           user.username
                         FROM
                           geocache, log, logtype, user, type
