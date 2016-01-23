@@ -15,7 +15,7 @@
 <!DOCTYPE html>
 <html>
 <?
-  require_once('include/head.html');
+  require_once('components/head.html');
   printBodyTag();
   showNavigation();
 ?>

@@ -2,12 +2,11 @@
   require_once('util/general.php');
   require_once('util/connection.php');
   require_once('util/logger.php');
-  require_once('util/types.php');
 ?>
 <!DOCTYPE html>
 <html>
 <?
-  require_once('include/head.html');
+  require_once('components/head.html');
   printBodyTag();
   showNavigation();
 ?>
@@ -74,11 +73,13 @@
                           geocache.gc,
                           geocache.difficulty,
                           geocache.terrain,
+                          geocache.country,
                           geocache.url,
                           type.type as 'type.type',
                           log.created,
                           logtype.type,
                           log.log,
+                          log.id as 'log.id',
                           user.username
                         FROM
                           geocache, log, logtype, user, type
@@ -100,19 +101,16 @@
     $gc = $row['gc'];
     $created = substr($row['created'], 8, 2).'.'.substr($row['created'], 5, 2).'.'.substr($row['created'], 0, 4);
     $log = $row['log'];
+    $logId = $row['log.id'];
     $username = $row['username'];
     $type = $row['type.type'];
     $difficulty = $row['difficulty'];
     $terrain = $row['terrain'];
+    $country = $row['country'];
     $url = $row['url'];
     $logType = $row['type'];
 
-    $gif = determineTypeIcon($type);
-    $difficultyString = ratingToStars("D:", $difficulty);
-    $terrainString = ratingToStars("T:", $terrain);
-    $logType = determineLogTypeIcon($logType);
-
-    printLogEntry($name, $gc, $gif, $created, $log, $logId, $username, $logType, $difficultyString, $terrainString, $countryImage, $url, $sessionResults);
+    printLogEntry($name, $gc, $type, $created, $log, $logId, $username, $logType, $difficulty, $terrain, $country, $url, array());
   }
 ?>
     </div>

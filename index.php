@@ -2,12 +2,11 @@
   require_once('util/general.php');
   require_once('util/connection.php');
   require_once('util/logger.php');
-  require_once('util/types.php');
 ?>
 <!DOCTYPE html>
 <html>
 <?
-  require_once('include/head.html');
+  require_once('components/head.html');
   printBodyTag();
   showNavigation();
 ?>
@@ -44,8 +43,7 @@
                             log.type = logtype.id
                           ORDER BY
                             log.created DESC,
-                            log.id DESC
-                          LIMIT 50");
+                            log.id DESC");
 
     $username = getSessionUser();
 
@@ -89,13 +87,7 @@
         $url = $row['url'];
         $logType = $row['type'];
 
-        $gif = determineTypeIcon($type);
-        $difficultyString = ratingToStars("D:", $difficulty);
-        $terrainString = ratingToStars("T:", $terrain);
-        $countryImage = countryToImage($country);
-        $logType = determineLogTypeIcon($logType);
-
-        printLogEntry($name, $gc, $gif, $created, $log, $logId, $username, $logType, $difficultyString, $terrainString, $countryImage, $url, $sessionResults);
+        printLogEntry($name, $gc, $type, $created, $log, $logId, $username, $logType, $difficulty, $terrain, $country, $url, $sessionResults);
       }
     }
     if(!$found) {

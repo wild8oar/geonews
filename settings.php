@@ -1,5 +1,4 @@
 <?
-  session_start();
   require_once('util/general.php');
   require_once('util/connection.php');
   require_once('util/logger.php');
@@ -25,7 +24,7 @@
 <!DOCTYPE html>
 <html>
 <?
-  require_once('include/head.html');
+  require_once('components/head.html');
   printBodyTag();
   showNavigation();
 ?>
