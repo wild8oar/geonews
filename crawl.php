@@ -252,7 +252,15 @@
       $logId = DB::queryFirstField("SELECT id FROM log WHERE geocache=%i AND user=%i LIMIT 1", $geocacheId, $userId);
 
       if(isset($logId)) {
-        $logIdWithDate = DB::queryFirstField("SELECT id FROM log WHERE geocache=%i AND created=%s LIMIT 1", $geocacheId, $created);
+        $logIdWithDate = DB::queryFirstField("SELECT id
+                                              FROM log
+                                              WHERE
+                                                geocache = %i AND
+                                                user = %i AND
+                                                year(created) = year(%s) AND
+                                                month(created) = month(%s) AND
+                                                day(created) = day(%s)
+                                              LIMIT 1", $geocacheId, $userId, $created, $created, $created);
         if(isset($logIdWithDate) && $log != 'No log found.' && $log != 'Premium.') {
           DB::query("UPDATE log SET log=%s WHERE id=%i", $log, $logIdWithDate);
           l("updated log for geocache $gc and user $username");
@@ -276,14 +284,23 @@
           'log' => $log
         ));
         l("inserted log for geocache $gc and user $username");
-        $logIdWithDate = DB::queryFirstField("SELECT id FROM log WHERE geocache=%i AND created=%s AND user=%i LIMIT 1", $geocacheId, $created, $userId);
+        $logIdWithDate = DB::queryFirstField("SELECT id
+                                              FROM log
+                                              WHERE
+                                                geocache = %i AND
+                                                user = %i AND
+                                                year(created) = year(%s) AND
+                                                month(created) = month(%s) AND
+                                                day(created) = day(%s)
+                                              LIMIT 1", $geocacheId, $userId, $created, $created, $created);
+        l("found log id with date: $logIdWithDate for saving the images");
         foreach($images as $image) {
           DB::insert('image', array(
             'log' => $logIdWithDate,
             'url' => $image
           ));
+          l("inserted image for geocache $gc and user $username");
         }
-        l("inserted/updated images for geocache $gc and user $username");
       }
 
       if(isset($finds)) {
