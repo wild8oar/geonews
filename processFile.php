@@ -1,6 +1,6 @@
 <?
-  require_once('util/connection.php');
-  require_once('util/logger.php');
+  require_once('connection.php');
+  require_once('logger.php');
   ob_implicit_flush(true);
 
 //  resetDb();

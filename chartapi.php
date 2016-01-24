@@ -1,5 +1,5 @@
 <?
-  require_once('util/connection.php');
+  require_once('connection.php');
 
   $username = $_GET['username'];
 

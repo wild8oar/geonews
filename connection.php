@@ -1,6 +1,6 @@
 <?
   require_once('meekro.php');
-  require_once('util/passwords.php');
+  require_once('passwords.php');
   DB::$user = 'musharos_geonews';
   DB::$password = $DB_PASSWORD;
   DB::$dbName = 'musharos_geonews';

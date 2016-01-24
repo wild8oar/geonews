@@ -1,7 +1,7 @@
 <?
-  require_once('util/general.php');
-  require_once('util/connection.php');
-  require_once('util/logger.php');
+  require_once('general.php');
+  require_once('connection.php');
+  require_once('logger.php');
 
   if(isset($_POST["submit"])) {
     $target_file = realpath(dirname(__FILE__))."/pocketquery.gpx";

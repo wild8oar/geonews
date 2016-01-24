@@ -1,8 +1,8 @@
 <?
-  require_once('util/general.php');
-  require_once('util/connection.php');
-  require_once('util/logger.php');
-  require_once('util/checkLogin.php');
+  require_once('general.php');
+  require_once('connection.php');
+  require_once('logger.php');
+  require_once('checkLogin.php');
 ?>
 <!DOCTYPE html>
 <html>

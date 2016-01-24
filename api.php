@@ -1,5 +1,5 @@
 <?
-  require_once('util/connection.php');
+  require_once('connection.php');
 
   if(isset($_GET['mode']) && $_GET['mode'] == 'recent') {
     $results = DB::query("SELECT
