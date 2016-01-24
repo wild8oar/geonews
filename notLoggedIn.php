@@ -15,5 +15,6 @@
         <div class='panel-body'>Please 'log in'.</div>
       </div>
     </div>
+    <script type="text/javascript">geolookup();</script>
   </body>
 </html>

@@ -19,7 +19,9 @@
 }
 .flagSmall {
   height: 18px;
-  border: 1px solid black;
+}
+.withoutBorder {
+  border: 0px solid black;
 }
 .navbar .container-fluid, .navbar-collapse {
   padding-left: 0;

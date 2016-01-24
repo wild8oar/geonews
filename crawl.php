@@ -2,7 +2,6 @@
   require_once('util/general.php');
   require_once('util/connection.php');
   require_once('util/logger.php');
-  require_once('util/convert.php');
   ob_implicit_flush(true);
 ?>
 <!DOCTYPE html>
@@ -77,9 +76,9 @@
       unset($gps);
       unset($lat);
       unset($lon);
-      if(strpos($page, "UTM:")) {
+      if(strpos($page, "ctl00_ContentBody_MapLinks_MapLinks")) {
         foreach($lines as $line) {
-          if(strpos($line, "UTM:")) {
+          if(strpos($line, "ctl00_ContentBody_MapLinks_MapLinks")) {
             $gps = $line;
             break;
           }
@@ -87,7 +86,11 @@
       }
 
       if(isset($gps) && $gps != '') {
-        l("found gps: $gps");
+        $latLon = preg_split('/" target="\_blank">Geocaching.com Map/', preg_split('/default.aspx\?/', $line)[1])[0];
+        $lat = preg_split('/&/', preg_split('/lat=/', $latLon)[1])[0];
+        $lon = preg_split('/lng=/', $latLon)[1];
+        l("found gps: $lat $lon");
+/*
         $zone = substr(trim(preg_split('/E /', preg_split('/UTM: /', $gps)[1])[0]), 0, -1);
         $utmLat = trim(preg_split('/ N /', preg_split('/ E /', $gps)[1])[0]);
         $utmLon = trim(preg_split('/</', preg_split('/ N /', $gps)[1])[0]);
@@ -97,6 +100,7 @@
         $lon = $latLon['lng'];
         l("converted lat: " + $lat);
         l("converted lon: " + $lon);
+*/
       } else {
         l("found no gps");
       }

@@ -92,5 +92,6 @@
         });
     	</script>
     </div>
+    <script type="text/javascript">geolookup();</script>
   </body>
 </html>
