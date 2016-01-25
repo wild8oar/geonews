@@ -34,17 +34,17 @@
                           FROM
                             geocache, log
                           WHERE
+                            geocache.id = log.geocache AND
+                            geocache.lat IS NOT NULL AND
+                            geocache.lon IS NOT NULL AND
                             (
-                              geocache.id = log.geocache AND
-                              geocache.lat IS NOT NULL AND
-                              geocache.lon IS NOT NULL AND
-                              geocache.address IS NULL
-                            ) OR (
-                              geocache.id = log.geocache AND
-                              geocache.lat IS NOT NULL AND
-                              geocache.lon IS NOT NULL AND
-                              geocache.canton IS NULL AND
-                              geocache.country = 'Switzerland'
+                              geocache.address IS NULL OR
+                              geocache.district IS NULL
+                            ) AND
+                            (
+                              geocache.country = 'Switzerland' OR
+                              geocache.country = 'Germany' OR
+                              geocache.country = 'Netherlands'
                             )
                           ORDER BY
                             log.created DESC
@@ -52,11 +52,13 @@
     echo json_encode($results, JSON_NUMERIC_CHECK);
   } else if(isset($_GET['mode']) && $_GET['mode'] == 'save_geolookup') {
     DB::update('geocache', array(
-      'address' => urldecode($_GET['address'])
+      'address' => urldecode($_GET['address']),
+      'lastUpdated' => date('Y-m-d H:i:s')
     ), "gc=%s", urldecode($_GET['gc']));
-  } else if(isset($_GET['mode']) && $_GET['mode'] == 'save_canton') {
+  } else if(isset($_GET['mode']) && $_GET['mode'] == 'save_district') {
     DB::update('geocache', array(
-      'canton' => urldecode($_GET['canton'])
+      'district' => urldecode($_GET['district']),
+      'lastUpdated' => date('Y-m-d H:i:s')
     ), "gc=%s", urldecode($_GET['gc']));
   } else {
     $results = DB::query("SELECT

@@ -103,62 +103,106 @@ function addMarkerAndFitBounds(point, map, markerBounds, name, gc, type, created
   });
 }
 
+
+
 function geolookup() {
+  var districts = new Object();
+  districts['Switzerland'] = [
+    ['Aargau', 'district of Aargau'],
+    ['Appenzell-Innerrhoden', 'Appenzell Innerrhoden', 'Appenzell Inner Rhodes'],
+    ['Appenzell-Ausserrhoden', 'Appenzell Ausserrhoden', 'Appenzell Outer Rhodes'],
+    ['Basel-Stadt', 'Basel Stadt'],
+    ['Basel-Landschaft', 'Basel Landschaft'],
+    ['Bern', 'Berne', 'district of Bern'],
+    ['Fribourg', 'Freiburg', 'district of Fribourg'],
+    ['Geneva', 'Genf', 'district of Geneva', 'Genève'],
+    ['Glarus', 'district of Glarus'],
+    ['Grisons', 'Graubünden', 'Graubunden', 'district of Grisons'],
+    ['Jura', 'district of Jura'],
+    ['Lucerne', 'Luzern', 'district of Lucerne'],
+    ['Neuchatel', 'Neuenburg', 'district of Neuchatel'],
+    ['Nidwalden', 'district of Nidwalden'],
+    ['Obwalden', 'district of Obwalden'],
+    ['Schaffhausen', 'district of Schaffhausen'],
+    ['Schwyz', 'district of Schwyz'],
+    ['Solothurn', 'district of Solothurn'],
+    ['St. Gallen', 'Saint Gallen', 'Sankt Gallen'],
+    ['Thurgau', 'district of Thurgau'],
+    ['Ticino', 'Tessin', 'district of Ticino'],
+    ['Uri', 'district of Uri'],
+    ['Valais', 'Wallis', 'district of Valais'],
+    ['Vaud', 'Waadt', 'district of Vaud'],
+    ['Zug', 'district of Zug'],
+    ['Zurich', 'Zürich', 'district of Zurich']
+  ];
+
+  districts['Germany'] = [
+    ['Baden-Württemberg'],
+    ['Bayern', 'Bavaria'],
+    ['Berlin'],
+    ['Brandenburg'],
+    ['Bremen'],
+    ['Hamburg'],
+    ['Hessen'],
+    ['Mecklenburg-Vorpommern'],
+    ['Niedersachsen', 'Lower Saxony'],
+    ['Nordrhein-Westfalen'],
+    ['Rheinland-Pfalz'],
+    ['Saarland'],
+    ['Sachsen-Anhalt'],
+    ['Sachsen'],
+    ['Schleswig-Holstein'],
+    ['Thüringen']
+  ];
+
+  districts['Netherlands'] = [
+    ['Drenthe'],
+    ['Flevoland'],
+    ['Friesland'],
+    ['Gelderland'],
+    ['Groningen'],
+    ['Limburg'],
+    ['Noord-Brabant'],
+    ['Noord-Holland'],
+    ['Overijssel'],
+    ['Utrecht'],
+    ['Zeeland'],
+    ['Zuid-Holland']
+  ];
+
   $.getJSON("api.php?mode=geolookup", function(data) {
     if(data.length != 0) {
+      console.log(data);
       var geocoder = new google.maps.Geocoder;
       data.forEach(function(geocache) {
         var latlng = {lat: geocache.lat, lng: geocache.lon};
           geocoder.geocode({'location': latlng}, function(results, status) {
           if (status === google.maps.GeocoderStatus.OK) {
-            if(results[1]) {
-              console.log(results[1]);
-              var address = results[1].formatted_address;
-//              console.log(address);
-              console.log('set address of ' + geocache.gc + ' to ' + address);
+//            console.log(results);
+            if(results[0]) {
+              var result = results[0];
+//              console.log(result);
+              var address = result.formatted_address;
+              console.log(geocache.gc + ' address -> ' + address);
               $.ajax({
                 url: "api.php?mode=save_geolookup&gc=" + encodeURIComponent(geocache.gc) + "&address=" + encodeURIComponent(address)
               });
-              if(geocache.country == 'Switzerland') {
-                var cantons = [
-                  ['Aargau', 'Canton of Aargau'],
-                  ['Appenzell-Innerrhoden', 'Appenzell Innerrhoden', 'Appenzell Inner Rhodes'],
-                  ['Appenzell-Ausserrhoden', 'Appenzell Ausserrhoden', 'Appenzell Outer Rhodes'],
-                  ['Basel-Stadt', 'Basel Stadt'],
-                  ['Basel-Landschaft', 'Basel Landschaft'],
-                  ['Bern', 'Berne', 'Canton of Bern'],
-                  ['Fribourg', 'Freiburg', 'Canton of Fribourg'],
-                  ['Geneva', 'Genf', 'Canton of Geneva'],
-                  ['Glarus', 'Canton of Glarus'],
-                  ['Grisons', 'Graubünden', 'Graubunden', 'Canton of Grisons'],
-                  ['Jura', 'Canton of Jura'],
-                  ['Lucerne', 'Luzern', 'Canton of Lucerne'],
-                  ['Neuchatel', 'Neuenburg', 'Canton of Neuchatel'],
-                  ['Nidwalden', 'Canton of Nidwalden'],
-                  ['Obwalden', 'Canton of Obwalden'],
-                  ['Schaffhausen', 'Canton of Schaffhausen'],
-                  ['Schwyz', 'Canton of Schwyz'],
-                  ['Solothurn', 'Canton of Solothurn'],
-                  ['St. Gallen', 'Saint Gallen', 'Sankt Gallen'],
-                  ['Thurgau', 'Canton of Thurgau'],
-                  ['Ticino', 'Tessin', 'Canton of Ticino'],
-                  ['Uri', 'Canton of Uri'],
-                  ['Valais', 'Wallis', 'Canton of Valais'],
-                  ['Vaud', 'Waadt', 'Canton of Vaud'],
-                  ['Zug', 'Canton of Zug'],
-                  ['Zurich', 'Zürich', 'Canton of Zurich']
-                ];
-                results[1].address_components.forEach(function(entry) {
-  //                console.log(entry.long_name);
-                  cantons.forEach(function(canton) {
-                    var firstCanton = canton[0];
-                    if(canton.indexOf(entry.long_name) != -1) {
-                      console.log('set canton of ' + geocache.gc + ' to ' + firstCanton);
-                      $.ajax({
-                        url: "api.php?mode=save_canton&gc=" + encodeURIComponent(geocache.gc) + "&canton=" + encodeURIComponent(firstCanton)
-                      })
-                    }
-                  });
+
+              var countryWithDistricts = districts[geocache.country];
+              if(countryWithDistricts != undefined) {
+                var flag = true;
+                result.address_components.forEach(function(entry) {
+                  if(flag) {
+                    countryWithDistricts.forEach(function(district) {
+                      if(district.indexOf(entry.long_name) != -1 && flag) {
+                        console.log(geocache.gc + ' district -> ' + district[0]);
+                        $.ajax({
+                          url: "api.php?mode=save_district&gc=" + encodeURIComponent(geocache.gc) + "&district=" + encodeURIComponent(district[0])
+                        });
+                        flag = false;
+                      }
+                    });
+                  }
                 });
               }
             } else {
@@ -169,11 +213,8 @@ function geolookup() {
           }
         });
       });
-      console.log(data);
+    } else {
+      console.log('nothing to do, yay! :>');
     }
   });
-
-
-
-
 }

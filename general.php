@@ -17,12 +17,12 @@
     return isset($_GET['embedded']) && $_GET['embedded'];
   }
 
-  function printLogEntry($name, $gc, $type, $created, $log, $logId, $username, $logType, $difficulty, $terrain, $country, $url, $sessionResults, $address, $canton, $lat, $lon) {
+  function printLogEntry($name, $gc, $type, $created, $log, $logId, $username, $logType, $difficulty, $terrain, $country, $url, $sessionResults, $address, $district, $lat, $lon) {
     $type = determineTypeIcon($type);
     $difficulty = ratingToStars("D:", $difficulty);
     $terrain = ratingToStars("T:", $terrain);
+    $district = districtToImage($country, $district);
     $country = countryToImage($country);
-    $canton = cantonToImage($canton);
     $logType = determineLogTypeIcon($logType);
 
     $images = DB::queryFirstColumn("SELECT
@@ -37,10 +37,10 @@
     }
     if($created == date('d.m.Y')) {
       echo "<div class='panel panel-primary'>";
-      echo "<div class='panel-heading'><a href='$url'><b>$name</b></a> <img src='res/icons/$type' width='20px' /> $difficulty $terrain $country $canton $address</div>";
+      echo "<div class='panel-heading'><a href='$url'><b>$name</b></a> <img src='res/icons/$type' width='20px' /> $difficulty $terrain $country $district $address</div>";
     } else {
       echo "<div class='panel panel-info'>";
-      echo "<div class='panel-heading'><a href='$url'><b>$name</b></a> <img src='res/icons/$type' width='20px' /> $difficulty $terrain $country $canton $address</div>";
+      echo "<div class='panel-heading'><a href='$url'><b>$name</b></a> <img src='res/icons/$type' width='20px' /> $difficulty $terrain $country $district $address</div>";
     }
     echo "<div class='panel-body'>$log</div>";
     if(!empty($images)) {
@@ -108,10 +108,10 @@
     return "<img class='flagSmall' src='res/icons/countries/$country.gif'/>";
   }
 
-  function cantonToImage($canton) {
-    if($canton == '') {
+  function districtToImage($country, $district) {
+    if($country == '' || $district == '') {
       return '';
     }
-    return "<img class='flagSmall withoutBorder' src='res/icons/blazons/$canton.png'/>";
+    return "<img class='flagSmall withoutBorder' src='res/icons/blazons/$country/$district.png'/>";
   }
 ?>

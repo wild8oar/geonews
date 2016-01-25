@@ -79,7 +79,7 @@
                           geocache.address,
                           geocache.lat,
                           geocache.lon,
-                          geocache.canton,
+                          geocache.district,
                           type.type AS 'type.type',
                           log.created,
                           logtype.type,
@@ -115,11 +115,11 @@
     $url = $row['url'];
     $logType = $row['type'];
     $address = $row['address'];
-    $canton = $row['canton'];
+    $district = $row['district'];
     $lat = $row['lat'];
     $lon = $row['lon'];
 
-    printLogEntry($name, $gc, $type, $created, $log, $logId, $username, $logType, $difficulty, $terrain, $country, $url, array(), $address, $canton, $lat, $lon);
+    printLogEntry($name, $gc, $type, $created, $log, $logId, $username, $logType, $difficulty, $terrain, $country, $url, array(), $address, $district, $lat, $lon);
   }
 ?>
     </div>
