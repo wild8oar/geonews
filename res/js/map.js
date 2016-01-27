@@ -1,9 +1,9 @@
-function addStationsFromDb(username) {
+function addStationsFromDb(username, country) {
   $.getJSON("api.php?username=" + encodeURIComponent(username), function(data) {
     if(data.length == 0) {
       $("#no-gpx").show();
     } else {
-      showMapAndPrintMarkers(data);
+      showMapAndPrintMarkers(data, country);
     }
   });
 }
@@ -16,7 +16,31 @@ function addRecentStationsFromDb(username) {
   });
 }
 
-function showMapAndPrintMarkers(obj) {
+function colorizeCountries(map, country) {
+  console.log(JSON.parse(country));
+  var countries = "ISO_2DIGIT IN (";
+  JSON.parse(country).forEach(function(country) {
+    countries = countries + "'" + country + "', "
+    console.log(country);
+  });
+  countries = countries.slice(0, -2) + ")";
+  var world_geometry = new google.maps.FusionTablesLayer({
+      query: {
+          from: '1N2LBk4JHwWpOY4d9fobIn27lfnZ5MDy-NoqqRpk',
+          where: countries
+      },
+      styles: [{
+          polygonOptions: {
+              fillColor: '#FFFF00',
+              fillOpacity: 0.2
+          }
+      }],
+      map: map,
+      suppressInfoWindows: true
+  });
+}
+
+function showMapAndPrintMarkers(obj, country) {
   var map = getMap('map');
   var markerBounds = new google.maps.LatLngBounds();
 
@@ -27,6 +51,7 @@ function showMapAndPrintMarkers(obj) {
     markerBounds.extend(point);
     map.fitBounds(markerBounds);
   });
+  colorizeCountries(map, country);
 }
 
 function getMap(id) {
