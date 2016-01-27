@@ -57,16 +57,60 @@
         }
       }
     }
+
+    $avatarFound = false;
+
     foreach($gatheredLinks as $gc => $url) {
-//    var_dump($gatheredLinks);
-//    if($username == "Adi&Ko") {
-//      $url = "https://www.geocaching.com/seek/cache_details.aspx?wp=GC5PMWP&title=grossweid";
-//      $url = "https://www.geocaching.com/seek/cache_details.aspx?wp=GC2RYJZ&title=lesestoff";
-//      $gc = 'GC2RYJZ';
-//      $url = "https://www.geocaching.com/seek/cache_details.aspx?wp=GC5XY40&title=kanzeli";
-//      $gc = 'GC5XY40';
       l("$url");
 
+      if(!$avatarFound) {
+        // avatar
+        unset($accountUrl);
+
+        $handle = curl_init($url);
+        curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($handle, CURLOPT_COOKIEFILE, $cookie);
+        curl_setopt($handle, CURLOPT_USERAGENT,'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36');
+        $html = curl_exec($handle);
+
+        $lines = explode(PHP_EOL, $html);
+        if (strpos($html, $username)) {
+          foreach($lines as $line) {
+            if(substr($line, 0, strlen('initalLogs')) == 'initalLogs') {
+              $decoded = json_decode(substr(substr($line, 13), 0, -2), true);
+              //var_dump($decoded);
+              foreach($decoded['data'] as $data) {
+                if($data['UserName'] == $username) {
+                  $accountUrl = 'https://www.geocaching.com/profile/?guid='.$data['AccountGuid'];
+                  l("found account guid: ".$data['AccountGuid']);
+                  $avatarFound = true;
+                }
+              }
+            }
+          }
+        }
+
+        if(isset($accountUrl) != '') {
+          $handle = curl_init($accountUrl);
+          curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
+          curl_setopt($handle, CURLOPT_COOKIEFILE, $cookie);
+          curl_setopt($handle, CURLOPT_USERAGENT,'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36');
+          $html = curl_exec($handle);
+          $lines = explode(PHP_EOL, $html);
+          foreach($lines as $line) {
+            if(strpos($line, 'ctl00_ContentBody_ProfilePanel1_uxProfilePhoto')) {
+              $avatarUrl = preg_split('/\.jpg/', preg_split('/http:\/\/img.geocaching.com\/user\/avatar\//', $line)[1])[0];
+              $avatarUrl = "https://img.geocaching.com/user/avatar/".$avatarUrl.".jpg";
+              l($avatarUrl);
+              DB::update('user', array(
+                'avatar' => $avatarUrl
+              ), "username=%s", $username);
+            }
+          }
+        }
+      }
+
+      // gps
       $handle = curl_init($url);
       curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
       curl_setopt($handle, CURLOPT_COOKIEFILE, $cookie);
@@ -223,17 +267,29 @@
       l("retrieved type ".$geocacheTypeId);
 
       if(isset($country)) {
-        DB::insertUpdate('geocache', array(
-          'gc' => $gc,
-          'type' => $geocacheTypeId,
-          'name' => $cacheName,
-          'difficulty' => $difficulty,
-          'terrain' => $terrain,
-          'country' => $country,
-          'lat' => $lat,
-          'lon' => $lon,
-          'url' => $url
-        ));
+        if(isset($lat) && isset($lon)) {
+          DB::insertUpdate('geocache', array(
+            'gc' => $gc,
+            'type' => $geocacheTypeId,
+            'name' => $cacheName,
+            'difficulty' => $difficulty,
+            'terrain' => $terrain,
+            'country' => $country,
+            'lat' => $lat,
+            'lon' => $lon,
+            'url' => $url
+          ));
+        } else {
+          DB::insertUpdate('geocache', array(
+            'gc' => $gc,
+            'type' => $geocacheTypeId,
+            'name' => $cacheName,
+            'difficulty' => $difficulty,
+            'terrain' => $terrain,
+            'country' => $country,
+            'url' => $url
+          ));
+        }
       } else {
         DB::insertUpdate('geocache', array(
           'gc' => $gc,

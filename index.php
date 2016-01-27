@@ -30,6 +30,7 @@
                           log.log,
                           log.id AS 'log.id',
                           user.username,
+                          user.avatar,
                           user.id AS 'user.id'
                         FROM
                           geocache, log, logtype, user, type
@@ -75,6 +76,7 @@
       $log = $row['log'];
       $logId = $row['log.id'];
       $username = $row['username'];
+      $avatar = $row['avatar'];
       $type = $row['type.type'];
       $difficulty = $row['difficulty'];
       $terrain = $row['terrain'];
@@ -86,7 +88,7 @@
       $lat = $row['lat'];
       $lon = $row['lon'];
 
-      printLogEntry($name, $gc, $type, $created, $log, $logId, $username, $logType, $difficulty, $terrain, $country, $url, $sessionResults, $address, $district, $lat, $lon);
+      printLogEntry($name, $gc, $type, $created, $log, $logId, $username, $logType, $difficulty, $terrain, $country, $url, $sessionResults, $address, $district, $lat, $lon, $avatar);
     }
   }
   if(!$found) {

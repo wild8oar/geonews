@@ -17,7 +17,7 @@
     return isset($_GET['embedded']) && $_GET['embedded'];
   }
 
-  function printLogEntry($name, $gc, $type, $created, $log, $logId, $username, $logType, $difficulty, $terrain, $country, $url, $sessionResults, $address, $district, $lat, $lon) {
+  function printLogEntry($name, $gc, $type, $created, $log, $logId, $username, $logType, $difficulty, $terrain, $country, $url, $sessionResults, $address, $district, $lat, $lon, $avatar) {
     $type = determineTypeIcon($type);
     $difficulty = ratingToStars("D:", $difficulty);
     $terrain = ratingToStars("T:", $terrain);
@@ -53,9 +53,9 @@
 
     $urlencodedUsername = urlencode($username);
     if(in_array($gc, $sessionResults) && $username != getSessionUser()) {
-      echo "<div class='panel-footer'><a class='u' href='all.php?username=$urlencodedUsername'>$username</a> $logType $created. (You <i class='fa fa-thumbs-up'></i> this one too.)</div>";
+      echo "<div class='panel-footer'><img src='$avatar' /> <a class='u' href='all.php?username=$urlencodedUsername'>$username</a> $logType $created. (You <i class='fa fa-thumbs-up'></i> this one too.)</div>";
     } else {
-      echo "<div class='panel-footer'><a class='u' href='all.php?username=$urlencodedUsername'>$username</a> $logType $created.</div>";
+      echo "<div class='panel-footer'><img src='$avatar' /> <a class='u' href='all.php?username=$urlencodedUsername'>$username</a> $logType $created.</div>";
     }
     echo "</div>";
   }
@@ -112,6 +112,6 @@
     if($country == '' || $district == '') {
       return '';
     }
-    return "<img class='flagSmall withoutBorder' src='res/icons/blazons/$country/$district.png'/>";
+    return "<img class='flagSmall withoutBorder' src='res/icons/flags/$country/$district.png'/>";
   }
 ?>
