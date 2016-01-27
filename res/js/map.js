@@ -1,9 +1,9 @@
-function addStationsFromDb(username, country) {
+function addStationsFromDb(username, countries) {
   $.getJSON("api.php?username=" + encodeURIComponent(username), function(data) {
     if(data.length == 0) {
       $("#no-gpx").show();
     } else {
-      showMapAndPrintMarkers(data, country);
+      showMapAndPrintMarkers(data, countries);
     }
   });
 }
@@ -16,18 +16,17 @@ function addRecentStationsFromDb(username) {
   });
 }
 
-function colorizeCountries(map, country) {
-  console.log(JSON.parse(country));
-  var countries = "ISO_2DIGIT IN (";
-  JSON.parse(country).forEach(function(country) {
-    countries = countries + "'" + country + "', "
-    console.log(country);
+function colorizeCountries(map, countries) {
+  console.log(JSON.parse(countries));
+  var countriesString = "ISO_2DIGIT IN (";
+  JSON.parse(countries).forEach(function(country) {
+    countriesString = countriesString + "'" + country + "', "
   });
-  countries = countries.slice(0, -2) + ")";
+  countriesString = countriesString.slice(0, -2) + ")";
   var world_geometry = new google.maps.FusionTablesLayer({
       query: {
           from: '1N2LBk4JHwWpOY4d9fobIn27lfnZ5MDy-NoqqRpk',
-          where: countries
+          where: countriesString
       },
       styles: [{
           polygonOptions: {
@@ -40,7 +39,7 @@ function colorizeCountries(map, country) {
   });
 }
 
-function showMapAndPrintMarkers(obj, country) {
+function showMapAndPrintMarkers(obj, countries) {
   var map = getMap('map');
   var markerBounds = new google.maps.LatLngBounds();
 
@@ -51,7 +50,10 @@ function showMapAndPrintMarkers(obj, country) {
     markerBounds.extend(point);
     map.fitBounds(markerBounds);
   });
-  colorizeCountries(map, country);
+  console.log(countries);
+  if(countries != undefined) {
+    colorizeCountries(map, countries);
+  }
 }
 
 function getMap(id) {
