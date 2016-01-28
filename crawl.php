@@ -121,6 +121,7 @@
       unset($lat);
       unset($lon);
       unset($country);
+      unset($finds);
       if(strpos($page, "ctl00_ContentBody_MapLinks_MapLinks")) {
         foreach($lines as $line) {
           if(strpos($line, "ctl00_ContentBody_MapLinks_MapLinks")) {
@@ -180,9 +181,7 @@
             //var_dump($decoded);
             foreach($decoded['data'] as $data) {
               if($data['UserName'] == $username) {
-                l($data['Created']);
                 $created = transformDate($data['Created']);
-                l($created);
                 $finds = $data['GeocacheFindCount'];
                 $log = $data['LogText'];
                 $logType = $data['LogType'];

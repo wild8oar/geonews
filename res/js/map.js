@@ -50,7 +50,6 @@ function showMapAndPrintMarkers(obj, countries) {
     markerBounds.extend(point);
     map.fitBounds(markerBounds);
   });
-  console.log(countries);
   if(countries != undefined) {
     colorizeCountries(map, countries);
   }

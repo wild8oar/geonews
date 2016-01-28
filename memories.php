@@ -2,7 +2,6 @@
   require_once('general.php');
   require_once('connection.php');
   require_once('logger.php');
-  require_once('checkLogin.php');
 ?>
 <!DOCTYPE html>
 <html>
