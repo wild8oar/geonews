@@ -120,7 +120,7 @@
     $lat = $row['lat'];
     $lon = $row['lon'];
 
-    printLogEntry($name, $gc, $type, $created, $log, $logId, $username, $logType, $difficulty, $terrain, $country, $url, array(), $address, $district, $lat, $lon, $avatar);
+    printLogEntry(false, $name, $gc, $type, $created, $log, $logId, $username, $logType, $difficulty, $terrain, $country, $url, array(), $address, $district, $lat, $lon, $avatar);
   }
 ?>
     </div>

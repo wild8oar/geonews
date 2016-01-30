@@ -17,7 +17,7 @@
     return isset($_GET['embedded']) && $_GET['embedded'];
   }
 
-  function printLogEntry($name, $gc, $type, $created, $log, $logId, $username, $logType, $difficulty, $terrain, $country, $url, $sessionResults, $address, $district, $lat, $lon, $avatar) {
+  function printLogEntry($dense, $name, $gc, $type, $created, $log, $logId, $username, $logType, $difficulty, $terrain, $country, $url, $sessionResults, $address, $district, $lat, $lon, $avatar) {
     $type = determineTypeIcon($type);
     $difficulty = ratingToStars("D:", $difficulty);
     $terrain = ratingToStars("T:", $terrain);
@@ -32,16 +32,19 @@
                                          WHERE
                                            image.log = %i", $logId);
 
+    if($dense) {
+      $dense = "style='margin-bottom: 5px;'";
+    }
+
     if(isset($lat) && isset($lon)) {
       $address = "<a href='http://maps.google.com/maps?q=$lat,$lon'>$address</a>";
     }
     if($created == date('d.m.Y')) {
-      echo "<div class='panel panel-primary'>";
-      echo "<div class='panel-heading'><a href='$url'><b>$name</b></a> <img src='res/icons/$type' width='20px' /> $difficulty $terrain $country $district $address</div>";
+      echo "<div class='panel panel-primary' $dense>";
     } else {
-      echo "<div class='panel panel-info'>";
-      echo "<div class='panel-heading'><a href='$url'><b>$name</b></a> <img src='res/icons/$type' width='20px' /> $difficulty $terrain $country $district $address</div>";
+      echo "<div class='panel panel-info' $dense>";
     }
+    echo "<div class='panel-heading'><a href='$url'><b>$name</b></a> <img src='res/icons/$type' width='20px' /> $difficulty $terrain $country $district $address</div>";
     echo "<div class='panel-body'>$log</div>";
     if(!empty($images)) {
       echo "<div class='panel-body'>";

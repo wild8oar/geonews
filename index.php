@@ -88,7 +88,7 @@
       $lat = $row['lat'];
       $lon = $row['lon'];
 
-      printLogEntry($name, $gc, $type, $created, $log, $logId, $username, $logType, $difficulty, $terrain, $country, $url, $sessionResults, $address, $district, $lat, $lon, $avatar);
+      printLogEntry(false, $name, $gc, $type, $created, $log, $logId, $username, $logType, $difficulty, $terrain, $country, $url, $sessionResults, $address, $district, $lat, $lon, $avatar);
     }
   }
   if(!$found) {
