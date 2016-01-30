@@ -53,9 +53,9 @@
 
     $urlencodedUsername = urlencode($username);
     if(in_array($gc, $sessionResults) && $username != getSessionUser()) {
-      echo "<div class='panel-footer'><img src='$avatar' /> <a class='u' href='all.php?username=$urlencodedUsername'>$username</a> $logType $created. (You <i class='fa fa-thumbs-up'></i> this one too.)</div>";
+      echo "<div class='panel-footer'><a class='u' href='all.php?username=$urlencodedUsername'>$username</a> $logType $created. (You <i class='fa fa-thumbs-up'></i> this one too.)</div>";
     } else {
-      echo "<div class='panel-footer'><img src='$avatar' /> <a class='u' href='all.php?username=$urlencodedUsername'>$username</a> $logType $created.</div>";
+      echo "<div class='panel-footer'><a class='u' href='all.php?username=$urlencodedUsername'>$username</a> $logType $created.</div>";
     }
     echo "</div>";
   }

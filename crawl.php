@@ -58,6 +58,8 @@
       }
     }
 
+    $gatheredLinks = array_reverse($gatheredLinks);
+
     $avatarFound = false;
 
     foreach($gatheredLinks as $gc => $url) {

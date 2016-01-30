@@ -290,7 +290,7 @@ $codes = array (
   } else {
 ?>
     <script type="text/javascript">
-        $('#map').height($(window).height() - 52);
+        $('#map').height($(window).height() - 50);
         addStationsFromDb(<? echo "'".getSessionUser()."', "; echo "'".json_encode($countryCodes)."'";  ?>);
     </script>
 <?

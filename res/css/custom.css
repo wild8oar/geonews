@@ -39,7 +39,3 @@ li {
 .panel-primary > .panel-heading > a {
   color: white;
 }
-.panel-footer > img {
-  height: 30px;
-  border: 1px solid black;
-}

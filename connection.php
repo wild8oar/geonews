@@ -7,9 +7,10 @@
 
   function printLoggedInUser() {
     if(isset($_COOKIE['geonews'])) {
-      echo $_COOKIE['geonews'];
+      $avatar = DB::queryOneField('avatar', 'SELECT avatar FROM user WHERE username = %s', $_COOKIE['geonews']);
+      echo "<img style='border: 1px solid black; height: 25px; margin-bottom: -10px; margin-top: -10px;' src='$avatar' /> ".$_COOKIE['geonews'];
     } else {
-      echo "Log in";
+      echo "<i class='fa fa-user'> Log in";
     }
   }
 

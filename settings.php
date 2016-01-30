@@ -2,23 +2,22 @@
   require_once('general.php');
   require_once('connection.php');
   require_once('logger.php');
+  require_once('checkLogin.php');
 
-  if(getSessionUser() != "") {
-    if(isset($_GET['addUser'])) {
-      DB::insertUpdate('user', array(
-        'username' => $_GET['addUser']
-      ));
+  if(isset($_GET['addUser'])) {
+    DB::insertUpdate('user', array(
+      'username' => $_GET['addUser']
+    ));
 
-      DB::insertIgnore('feed', array(
-        'user' => DB::queryFirstField("SELECT id FROM user WHERE username = %s", getSessionUser()),
-        'feeduser' => DB::queryFirstField("SELECT id FROM user WHERE username = %s", $_GET['addUser'])
-      ));
-    } else if(isset($_GET['removeUser'])) {
-      $user = DB::queryFirstField("SELECT id FROM user WHERE username = %s", getSessionUser());
-      $feedUser = DB::queryFirstField("SELECT id FROM user WHERE username = %s", $_GET['removeUser']);
+    DB::insertIgnore('feed', array(
+      'user' => DB::queryFirstField("SELECT id FROM user WHERE username = %s", getSessionUser()),
+      'feeduser' => DB::queryFirstField("SELECT id FROM user WHERE username = %s", $_GET['addUser'])
+    ));
+  } else if(isset($_GET['removeUser'])) {
+    $user = DB::queryFirstField("SELECT id FROM user WHERE username = %s", getSessionUser());
+    $feedUser = DB::queryFirstField("SELECT id FROM user WHERE username = %s", $_GET['removeUser']);
 
-      DB::delete('feed', 'user=%s AND feeduser='.$feedUser, $user);
-    }
+    DB::delete('feed', 'user=%s AND feeduser='.$feedUser, $user);
   }
 ?>
 <!DOCTYPE html>
@@ -29,16 +28,6 @@
   showNavigation();
 ?>
     <div class="panel-body">
-<?
-    if(getSessionUser() == "") {
-?>
-      <div class='panel panel-info'>
-        <div class='panel-heading'>Not logged in</div>
-        <div class='panel-body'>Please 'log in' on the top right corner.</div>
-      </div>
-<?
-    } else {
-?>
       <div class='panel panel-info'>
         <div class='panel-heading'>Add user to feed and index</div>
         <div class='panel-body'>
@@ -79,9 +68,6 @@
           </form>
         </div>
       </div>
-<?
-    }
-?>
     </div>
     <script type="text/javascript">geolookup();</script>
   </body>

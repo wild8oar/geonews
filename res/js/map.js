@@ -17,7 +17,7 @@ function addRecentStationsFromDb(username) {
 }
 
 function colorizeCountries(map, countries) {
-  console.log(JSON.parse(countries));
+//  console.log(JSON.parse(countries));
   var countriesString = "ISO_2DIGIT IN (";
   JSON.parse(countries).forEach(function(country) {
     countriesString = countriesString + "'" + country + "', "
@@ -43,16 +43,16 @@ function showMapAndPrintMarkers(obj, countries) {
   var map = getMap('map');
   var markerBounds = new google.maps.LatLngBounds();
 
-  $("#map").show();
   obj.forEach(function(geocache) {
     var point = new google.maps.LatLng(geocache.lat, geocache.lon);
-    addMarkerAndFitBounds(point, map, markerBounds, geocache.name, geocache.gc, geocache.type, geocache.created, geocache.url);
+    addMarker(point, map, markerBounds, geocache.name, geocache.gc, geocache.type, geocache.created, geocache.url);
     markerBounds.extend(point);
-    map.fitBounds(markerBounds);
   });
+  map.fitBounds(markerBounds);
   if(countries != undefined) {
     colorizeCountries(map, countries);
   }
+  $("#map").show();
 }
 
 function getMap(id) {
@@ -66,19 +66,19 @@ function getMap(id) {
 
 var infowindow = new google.maps.InfoWindow();
 
-function addMarkerAndFitBounds(point, map, markerBounds, name, gc, type, created, url) {
+var size = new google.maps.Size(25, 25);
+if(window.devicePixelRatio > 1.5){
+  size = new google.maps.Size(50, 50);
+}
 
-  var size = new google.maps.Size(25, 25);
-  if(window.devicePixelRatio > 1.5){
-    size = new google.maps.Size(50, 50);
-  }
+var it = {
+  size: size,
+  scaledSize: new google.maps.Size(25, 25),
+  origin: new google.maps.Point(0,0),
+  anchor: new google.maps.Point(13, 13)
+}
 
-  var it = {
-    size: size,
-    scaledSize: new google.maps.Size(25, 25),
-    origin: new google.maps.Point(0,0),
-    anchor: new google.maps.Point(13, 13)
-  }
+function addMarker(point, map, markerBounds, name, gc, type, created, url) {
 
   switch(type) {
     case 'Traditional Cache':
@@ -120,6 +120,7 @@ function addMarkerAndFitBounds(point, map, markerBounds, name, gc, type, created
     label: ' ',
     map: map
   });
+
 
   marker.addListener('click', function() {
     infowindow.close();
@@ -198,7 +199,6 @@ function geolookup() {
 
   $.getJSON("api.php?mode=geolookup", function(data) {
     if(data.length != 0) {
-      console.log(data);
       var geocoder = new google.maps.Geocoder;
       data.forEach(function(geocache) {
         var latlng = {lat: geocache.lat, lng: geocache.lon};
