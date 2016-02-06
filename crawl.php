@@ -18,7 +18,6 @@
 <?
   $cookie = tempnam('tmp','cookie');
 
-
   $handle = curl_init('https://www.geocaching.com/login/default.aspx?RESETCOMPLETE=y&redir=%2fplay');
   curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
   curl_setopt($handle, CURLOPT_COOKIEJAR, $cookie);
@@ -93,7 +92,7 @@
           }
         }
 
-        if(isset($accountUrl) != '') {
+        if(isset($accountUrl) && $accountUrl != '') {
           $handle = curl_init($accountUrl);
           curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
           curl_setopt($handle, CURLOPT_COOKIEFILE, $cookie);
@@ -104,6 +103,7 @@
             if(strpos($line, 'ctl00_ContentBody_ProfilePanel1_uxProfilePhoto')) {
               $avatarUrl = preg_split('/\.jpg/', preg_split('/http:\/\/img.geocaching.com\/user\/avatar\//', $line)[1])[0];
               $avatarUrl = "https://img.geocaching.com/user/avatar/".$avatarUrl.".jpg";
+              $avatarUrl = httpsifyUrl($avatarUrl);
               l($avatarUrl);
               DB::update('user', array(
                 'avatar' => $avatarUrl
@@ -362,7 +362,7 @@
   }
 
   function getGeocacheType($html) {
-    if(strpos($html, 'title="Multi-cache"')) {
+    if(strpos($html, 'title="Multi-cache"') || strpos($html, 'Multi-cache')) {
       return 'Multi-cache';
     } else if(strpos($html, 'title="Wherigo Cache"')) {
       return 'Wherigo Cache';
