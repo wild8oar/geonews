@@ -18,6 +18,7 @@
 <?
   $cookie = tempnam('tmp','cookie');
 
+
   $handle = curl_init('https://www.geocaching.com/login/default.aspx?RESETCOMPLETE=y&redir=%2fplay');
   curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
   curl_setopt($handle, CURLOPT_COOKIEJAR, $cookie);
@@ -138,17 +139,6 @@
         $lat = preg_split('/&/', preg_split('/lat=/', $latLon)[1])[0];
         $lon = preg_split('/lng=/', $latLon)[1];
         l("found gps: $lat $lon");
-/*
-        $zone = substr(trim(preg_split('/E /', preg_split('/UTM: /', $gps)[1])[0]), 0, -1);
-        $utmLat = trim(preg_split('/ N /', preg_split('/ E /', $gps)[1])[0]);
-        $utmLon = trim(preg_split('/</', preg_split('/ N /', $gps)[1])[0]);
-
-        $latLon = utmToLatLon($utmLon, $utmLat, $zone);
-        $lat = $latLon['lat'];
-        $lon = $latLon['lng'];
-        l("converted lat: " + $lat);
-        l("converted lon: " + $lon);
-*/
       } else {
         l("found no gps");
       }
@@ -323,6 +313,7 @@
           l("updated log for geocache $gc and user $username");
           DB::query("DELETE FROM image WHERE log=%i", $logIdWithDate);
           foreach($images as $image) {
+            $image = httpsifyUrl($image);
             DB::insert('image', array(
               'log' => $logIdWithDate,
               'url' => $image
@@ -352,6 +343,7 @@
                                               LIMIT 1", $geocacheId, $userId, $created, $created, $created);
         l("found log id with date: $logIdWithDate for saving the images");
         foreach($images as $image) {
+          $image = httpsifyUrl($image);
           DB::insert('image', array(
             'log' => $logIdWithDate,
             'url' => $image
@@ -418,6 +410,17 @@
 
   function retrieveCacheNameForPremium($line) {
     return trim(preg_split('/</', preg_split('/>/', $line)[1])[0]);
+  }
+
+  function httpsifyUrl($url) {
+    $imageUrlHandle = curl_init($url);
+    curl_setopt($imageUrlHandle, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($imageUrlHandle, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($imageUrlHandle, CURLOPT_USERAGENT,'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36');
+    curl_exec($imageUrlHandle);
+    $redirectUrl = curl_getinfo($imageUrlHandle)['redirect_url'];
+    $redirectUrl = preg_replace("/^http:/i", "https:", $redirectUrl);
+    return $redirectUrl;
   }
 
   function transformDate($date) {
