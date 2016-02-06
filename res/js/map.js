@@ -179,7 +179,7 @@ function geolookup() {
     ['Sachsen-Anhalt'],
     ['Sachsen'],
     ['Schleswig-Holstein'],
-    ['Thüringen']
+    ['Thüringen', 'Thüringen']
   ];
 
   districts['Netherlands'] = [

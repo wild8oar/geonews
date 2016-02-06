@@ -372,10 +372,6 @@
   function getGeocacheType($html) {
     if(strpos($html, 'title="Multi-cache"')) {
       return 'Multi-cache';
-    } else if(strpos($html, 'title="Mystery Cache"') || strpos($html, 'Mystery')) {
-      return 'Unknown Cache';
-    } else if(strpos($html, 'title="Traditional Geocache"') || strpos($html, 'Traditional')) {
-      return 'Traditional Cache';
     } else if(strpos($html, 'title="Wherigo Cache"')) {
       return 'Wherigo Cache';
     } else if(strpos($html, 'title="EarthCache"')) {
@@ -384,6 +380,14 @@
       return 'Virtual Cache';
     } else if(strpos($html, 'title="Letterbox Hybrid"')) {
       return 'Letterbox Hybrid';
+    } else if(strpos($html, 'title="Webcam Cache"')) {
+      return 'Webcam Cache';
+    } else if(strpos($html, 'title="Event Cache"') || strpos($html, 'title="Mega-Event Cache"') || strpos($html, 'title="Giga-Event Cache"')) {
+      return 'Event Cache';
+    } else if(strpos($html, 'title="Mystery Cache"') || strpos($html, 'Mystery')) {
+      return 'Unknown Cache';
+    } else if(strpos($html, 'title="Traditional Geocache"') || strpos($html, 'Traditional')) {
+      return 'Traditional Cache';
     }
     return 'unknown';
   }

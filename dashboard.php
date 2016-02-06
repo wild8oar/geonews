@@ -223,6 +223,6 @@
       });
 
     </script>
-<!--    <script type="text/javascript">geolookup();</script>-->
+    <script type="text/javascript">geolookup();</script>
   </body>
 </html>
