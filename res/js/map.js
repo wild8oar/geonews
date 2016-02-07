@@ -164,7 +164,7 @@ function geolookup() {
   ];
 
   districts['Germany'] = [
-    ['Baden-Württemberg'],
+    ['Baden-Wuerttemberg', 'Baden-Württemberg'],
     ['Bayern', 'Bavaria'],
     ['Berlin'],
     ['Brandenburg'],
@@ -179,7 +179,7 @@ function geolookup() {
     ['Sachsen-Anhalt'],
     ['Sachsen'],
     ['Schleswig-Holstein'],
-    ['Thüringen']
+    ['Thueringen', 'Thüringen']
   ];
 
   districts['Netherlands'] = [
