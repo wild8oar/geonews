@@ -45,14 +45,13 @@
       echo "<div class='panel panel-info' $dense>";
     }
     echo "<div class='panel-heading'><a href='$url'><b>$name</b></a> <img src='res/icons/$type' width='20px' /> $difficulty $terrain $country $district $address</div>";
-    echo "<div class='panel-body'>$log</div>";
+    echo "<div class='panel-body'>$log";
     if(!empty($images)) {
-      echo "<div class='panel-body'>";
       foreach($images as $image) {
         echo '<img class="img-rounded" style="max-width: 100%; margin-bottom: 10px;" src="'.$image.'" />&nbsp;&nbsp;';
       }
-      echo "</div>";
     }
+    echo "</div>";
 
     $urlencodedUsername = urlencode($username);
     if(in_array($gc, $sessionResults) && $username != getSessionUser()) {
