@@ -141,7 +141,7 @@
                                                             log.user = user.id AND
                                                             type.id = geocache.type AND
                                                             log.type = logtype.id AND
-                                                            logtype.type = 'Found it' AND
+                                                            (logtype.type = 'Found it' OR logtype.type = 'Attended' OR logtype.type = 'Webcam Photo Taken') AND
                                                             user.username = %s
                                                           ORDER BY
                                                             log.created DESC,
