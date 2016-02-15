@@ -57,7 +57,7 @@
                 $name = $row['name'];
                 $gc = $row['gc'];
                 $created = substr($row['created'], 8, 2).'.'.substr($row['created'], 5, 2).'.'.substr($row['created'], 0, 4);
-                $log = $row['log'];
+                $log = str_replace("/images/icons/", "https://www.geocaching.com/images/icons/", $row['log']);
                 $logId = $row['log.id'];
                 $username = $row['username'];
                 $avatar = $row['avatar'];
@@ -154,7 +154,7 @@
                       $name = $row['name'];
                       $gc = $row['gc'];
                       $created = substr($row['created'], 8, 2).'.'.substr($row['created'], 5, 2).'.'.substr($row['created'], 0, 4);
-                      $log = $row['log'];
+                      $log = str_replace("/images/icons/", "https://www.geocaching.com/images/icons/", $row['log']);
                       $logId = $row['log.id'];
                       $username = $row['username'];
                       $avatar = $row['avatar'];
