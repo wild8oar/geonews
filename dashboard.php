@@ -16,7 +16,7 @@
         <div class="col-sm-6 col-sm-push-6">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h3 class="panel-title"><a href="memories.php"><i class="fa fa-calendar"></i> Memories</a></h3>
+              <h3 class="panel-title"><a href="memories.php"><i class="fa fa-calendar"></i> On this day</a></h3>
             </div>
             <div class="panel-body" style="padding: 5px; padding-bottom: 0px;">
 <?

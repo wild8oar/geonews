@@ -57,13 +57,13 @@
     echo "<div class='panel panel-info'>";
     $month = date('m');
     $day = date('d');
-    echo "<div class='panel-heading'>Logs of $day.$month. (today) in past years of <b>$username</b> ($finds)</div>";
+    echo "<div class='panel-heading'>On this day of <b>$username</b> ($finds)</div>";
     echo "</div>";
   } else {
     echo "<div class='panel panel-info'>";
     $month = date('m');
     $day = date('d');
-    echo "<div class='panel-heading'>Logs of $day.$month. (today) in past years of all indexed users</div>";
+    echo "<div class='panel-heading'>On this day of all indexed users</div>";
     echo "</div>";
     $username = '%';
     $sessionResults = array();

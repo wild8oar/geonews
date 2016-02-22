@@ -184,6 +184,7 @@
                     array_push($images, 'https://img.geocaching.com/cache/log/large/'.$image['FileName']);
                   }
                 }
+                break;
               }
             }
           }
