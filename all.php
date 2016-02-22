@@ -46,6 +46,7 @@
                           geocache.gc,
                           geocache.difficulty,
                           geocache.terrain,
+                          geocache.favorites,
                           geocache.country,
                           geocache.url,
                           geocache.address,
@@ -102,6 +103,7 @@
     $difficulty = $row['difficulty'];
     $terrain = $row['terrain'];
     $country = $row['country'];
+    $favorites = $row['favorites'];
     $url = $row['url'];
     $logType = $row['type'];
     $address = $row['address'];
@@ -109,7 +111,7 @@
     $lat = $row['lat'];
     $lon = $row['lon'];
 
-    printLogEntry(false, $name, $gc, $type, $created, $log, $logId, $username, $logType, $difficulty, $terrain, $country, $url, $sessionResults, $address, $district, $lat, $lon, $avatar);
+    printLogEntry(false, $name, $gc, $type, $created, $log, $logId, $username, $logType, $difficulty, $terrain, $favorites, $country, $url, $sessionResults, $address, $district, $lat, $lon, $avatar);
   }
 ?>
     </div>

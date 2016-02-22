@@ -125,6 +125,7 @@
       unset($lon);
       unset($country);
       unset($finds);
+      unset($fp);
       if(strpos($page, "ctl00_ContentBody_MapLinks_MapLinks")) {
         foreach($lines as $line) {
           if(strpos($line, "ctl00_ContentBody_MapLinks_MapLinks")) {
@@ -255,6 +256,19 @@
         }
       }
 
+      $nextFpLine = false;
+      if(!isset($fp)) {
+        foreach($lines as $favoritePointLine) {
+          if($nextFpLine) {
+            $fp = trim($favoritePointLine);
+            break;
+          }
+          if(strpos($favoritePointLine, "<span class=\"favorite-value\">")) {
+            $nextFpLine = true;
+          }
+        }
+      }
+
       $geocacheTypeId = DB::queryFirstField("SELECT id FROM type WHERE type=%s LIMIT 1", getGeocacheType($html));
       l("retrieved type ".$geocacheTypeId);
 
@@ -266,6 +280,7 @@
             'name' => $cacheName,
             'difficulty' => $difficulty,
             'terrain' => $terrain,
+            'favorites' => $fp,
             'country' => $country,
             'lat' => $lat,
             'lon' => $lon,
@@ -278,6 +293,7 @@
             'name' => $cacheName,
             'difficulty' => $difficulty,
             'terrain' => $terrain,
+            'favorites' => $fp,
             'country' => $country,
             'url' => $url
           ));
@@ -289,11 +305,12 @@
           'name' => $cacheName,
           'difficulty' => $difficulty,
           'terrain' => $terrain,
+          'favorites' => $fp,
           'url' => $url
         ));
       }
 
-      l("inserted/updated geocache $gc with name $cacheName, difficulty $difficulty and terrain $terrain");
+      l("inserted/updated geocache $gc with name $cacheName, difficulty $difficulty and terrain $terrain and fp $fp.");
 
       $geocacheId = DB::queryFirstField("SELECT id FROM geocache WHERE gc=%s LIMIT 1", $gc);
       $logTypeId = DB::queryFirstField("SELECT id FROM logtype WHERE type=%s LIMIT 1", $logType);

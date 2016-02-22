@@ -17,13 +17,14 @@
     return isset($_GET['embedded']) && $_GET['embedded'];
   }
 
-  function printLogEntry($dense, $name, $gc, $type, $created, $log, $logId, $username, $logType, $difficulty, $terrain, $country, $url, $sessionResults, $address, $district, $lat, $lon, $avatar) {
+  function printLogEntry($dense, $name, $gc, $type, $created, $log, $logId, $username, $logType, $difficulty, $terrain, $favorites, $country, $url, $sessionResults, $address, $district, $lat, $lon, $avatar) {
     $type = determineTypeIcon($type);
     $difficulty = ratingToStars("D:", $difficulty);
     $terrain = ratingToStars("T:", $terrain);
     $district = districtToImage($country, $district);
     $country = countryToImage($country);
     $logType = determineLogTypeIcon($logType);
+    $favorites = favoritesToHearts($favorites);
 
     $images = DB::queryFirstColumn("SELECT
                                            url
@@ -44,7 +45,7 @@
     } else {
       echo "<div class='panel panel-info' $dense>";
     }
-    echo "<div class='panel-heading'><a href='$url'><b>$name</b></a> <img src='res/icons/$type' width='20px' /> $difficulty $terrain $country $district $address</div>";
+    echo "<div class='panel-heading'><a href='$url'><b>$name</b></a> <img src='res/icons/$type' width='20px' /> $difficulty $terrain $favorites $country $district $address</div>";
     echo "<div class='panel-body'>$log";
     if(!empty($images)) {
       foreach($images as $image) {
@@ -101,6 +102,13 @@
       case '4.5': return $prefix.' <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i>';
       case '5': return $prefix.' <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>';
     }
+  }
+
+  function favoritesToHearts($value) {
+    if($value == -1) {
+      return "";
+    }
+    return "($value <i class='fa fa-heart'></i>)";
   }
 
   function countryToImage($country) {
