@@ -425,19 +425,19 @@
   }
 
   function transformDate($date) {
+/*
+    // not premium user
     $parts = explode('/', $date);
     $month = $parts[0];
     $day = $parts[1];
     $year = $parts[2];
     return "$year-$month-$day"."T".date('G:i:s')."Z";
-    /*
-        // with premium enabled user
-        $parts = explode(' ', $date);
-        $day = $parts[0];
-        $month = date_parse($parts[1])['month'];
-        $year = $parts[2];
-        return "$year-$month-$day"."T".date('G:i:s')."Z";
-    */
+*/
+    $parts = explode(' ', $date);
+    $day = $parts[0];
+    $month = date_parse($parts[1])['month'];
+    $year = $parts[2];
+    return "$year-$month-$day"."T".date('G:i:s')."Z";
   }
 ?>
         </div>
