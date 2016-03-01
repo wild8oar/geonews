@@ -268,6 +268,9 @@
           }
         }
       }
+      if(!isset($fp)) {
+        $fp = 0;
+      }
 
       $geocacheTypeId = DB::queryFirstField("SELECT id FROM type WHERE type=%s LIMIT 1", getGeocacheType($html));
       l("retrieved type ".$geocacheTypeId);
