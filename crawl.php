@@ -50,7 +50,11 @@
           $query = 'http://www.geocaching.com/geocache/';
           if($name == 'href' && substr($value, 0, strlen($query)) == $query) {
             $gc = preg_split('/geocache\//', preg_split('/_/', $value)[0])[1];
-            $title = preg_split('/_/', $value)[1];
+            if(strpos($value, '_')) {
+              $title = preg_split('/_/', $value)[1];
+            } else {
+              $title = $value;
+            }
             $linkValue = "https://www.geocaching.com/seek/cache_details.aspx?wp=$gc&title=$title";
             $gatheredLinks[$gc] = $linkValue;
           }
@@ -190,26 +194,8 @@
             }
           }
         }
-      } else if(!strpos($html, 'Premium Member Only Cache')) {
-        l("old one");
-        foreach($lines as $line) {
-          if(strpos($line, 'ctl00_ContentBody_uxLegendScale')) {
-            $difficulty = retrieveDifficulty($line);
-          }
-
-          if(strpos($line, 'ctl00_ContentBody_Localize12')) {
-            $terrain = retrieveTerrain($line);
-          }
-
-          if(strpos($line, 'ctl00_ContentBody_CacheName')) {
-            $cacheName = retrieveCacheName($line);
-            l("retrieved cache name $cacheName");
-          }
-
-          $created = date('Y-m-d')."T".date('G:i:s')."Z";
-          $log = 'No log found.';
-          $logType = 'Found it';
-        }
+      } else if(!strpos($html, 'Premium Member Only Cache')) { // old log
+        continue;
       } else { // premium
         l("premium");
         $lines = explode(PHP_EOL, $html);
