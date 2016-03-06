@@ -157,76 +157,42 @@
       $images = array();
 
       $lines = explode(PHP_EOL, $html);
-//      l($html);
-      if (strpos($html, $username)) {
-        l("normal");
-        foreach($lines as $line) {
-          if(strpos($line, 'ctl00_ContentBody_uxLegendScale')) {
-            $difficulty = retrieveDifficulty($line);
-          }
+      foreach($lines as $line) {
+        if(strpos($line, 'ctl00_ContentBody_uxLegendScale')) {
+          $difficulty = retrieveDifficulty($line);
+        }
 
-          if(strpos($line, 'ctl00_ContentBody_Localize12')) {
-            $terrain = retrieveTerrain($line);
-          }
+        if(strpos($line, 'ctl00_ContentBody_Localize12')) {
+          $terrain = retrieveTerrain($line);
+        }
 
-          if(strpos($line, 'ctl00_ContentBody_CacheName')) {
-            $cacheName = retrieveCacheName($line);
-          }
+        if(strpos($line, 'ctl00_ContentBody_CacheName')) {
+          $cacheName = retrieveCacheName($line);
+        }
 
-          if(substr($line, 0, strlen('initalLogs')) == 'initalLogs') {
-            $decoded = json_decode(substr(substr($line, 13), 0, -2), true);
-            //var_dump($decoded);
-            foreach($decoded['data'] as $data) {
-              if($data['UserName'] == $username) {
-                $created = transformDate($data['Created']);
-                $finds = $data['GeocacheFindCount'];
-                $log = $data['LogText'];
-                $logType = $data['LogType'];
+        if(substr($line, 0, strlen('initalLogs')) == 'initalLogs') {
+          $decoded = json_decode(substr(substr($line, 13), 0, -2), true);
+          //var_dump($decoded);
+          foreach($decoded['data'] as $data) {
+            if($data['UserName'] == $username) {
+              $created = transformDate($data['Created']);
+              $finds = $data['GeocacheFindCount'];
+              $log = $data['LogText'];
+              $logType = $data['LogType'];
 
-                if(!empty($data['Images'])) {
-                  foreach($data['Images'] as $image) {
-                    l('<img src="https://img.geocaching.com/cache/log/large/'.$image['FileName'].'" />');
-                    array_push($images, 'https://img.geocaching.com/cache/log/large/'.$image['FileName']);
-                  }
+              if(!empty($data['Images'])) {
+                foreach($data['Images'] as $image) {
+                  l('<img src="https://img.geocaching.com/cache/log/large/'.$image['FileName'].'" />');
+                  array_push($images, 'https://img.geocaching.com/cache/log/large/'.$image['FileName']);
                 }
-                break;
               }
+              break;
             }
           }
         }
-      } else if(!strpos($html, 'Premium Member Only Cache')) { // old log
+      }
+      if(!isset($log)) {
         continue;
-      } else { // premium
-        l("premium");
-        $lines = explode(PHP_EOL, $html);
-        $nextDifficulty = false;
-        $nextTerrain = false;
-        foreach($lines as $line) {
-          if(strpos($line, '<h1 class="heading-3">')) {
-            $cacheName = retrieveCacheNameForPremium($line);
-          }
-
-          if($nextDifficulty) {
-            $difficulty = retrieveDifficultyForPremium($line);
-            $nextDifficulty = false;
-          }
-
-          if(strpos($line, '<li><span id="ctl00_ContentBody_lblDifficulty" class="span__title">Difficulty</span>')) {
-            $nextDifficulty = true;
-          }
-
-          if($nextTerrain) {
-            $terrain = retrieveTerrainForPremium($line);
-            $nextTerrain = false;
-          }
-
-          if(strpos($line, '<li><span id="ctl00_ContentBody_lblTerrain" class="span__title">Terrain</span>')) {
-            $nextTerrain = true;
-          }
-        }
-        $created = date('Y-m-d')."T".date('G:i:s')."Z";
-        $log = 'Premium.';
-        $logType = 'Found it';
       }
 
       $countries = array("Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegowina", "Botswana", "Bouvet Island", "Brazil", "British Indian Ocean Territory", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Cocos (Keeling) Islands", "Colombia", "Comoros", "Congo", "Congo, the Democratic Republic of the", "Cook Islands", "Costa Rica", "Cote d'Ivoire", "Croatia (Hrvatska)", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands (Malvinas)", "Faroe Islands", "Fiji", "Finland", "France", "France Metropolitan", "French Guiana", "French Polynesia", "French Southern Territories", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guam", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Heard and Mc Donald Islands", "Holy See (Vatican City State)", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran (Islamic Republic of)", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, Democratic People's Republic of", "Korea, Republic of", "Kuwait", "Kyrgyzstan", "Lao, People's Democratic Republic", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libyan Arab Jamahiriya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia, The Former Yugoslav Republic of", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Micronesia, Federated States of", "Moldova, Republic of", "Monaco", "Mongolia", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Niue", "Norfolk Island", "Northern Mariana Islands", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Pitcairn", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania", "Russian Federation", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Seychelles", "Sierra Leone", "Singapore", "Slovakia (Slovak Republic)", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Georgia and the South Sandwich Islands", "Spain", "Sri Lanka", "St. Helena", "St. Pierre and Miquelon", "Sudan", "Suriname", "Svalbard and Jan Mayen Islands", "Swaziland", "Sweden", "Switzerland", "Syrian Arab Republic", "Taiwan, Province of China", "Tajikistan", "Tanzania, United Republic of", "Thailand", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks and Caicos Islands", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Virgin Islands (British)", "Virgin Islands (U.S.)", "Wallis and Futuna Islands", "Western Sahara", "Yemen", "Yugoslavia", "Zambia", "Zimbabwe");
@@ -315,7 +281,7 @@
                                                 month(created) = month(%s) AND
                                                 day(created) = day(%s)
                                               LIMIT 1", $geocacheId, $userId, $created, $created, $created);
-        if(isset($logIdWithDate) && $log != 'No log found.' && $log != 'Premium.') {
+        if(isset($logIdWithDate)) {
           DB::query("UPDATE log SET log=%s WHERE id=%i", $log, $logIdWithDate);
           l("updated log for geocache $gc and user $username");
           DB::query("DELETE FROM image WHERE log=%i", $logIdWithDate);
@@ -328,7 +294,7 @@
           }
           l("inserted/updated images for geocache $gc and user $username");
         } else {
-          l("did not update premium log for geocache $gc and user $username");
+          l("did not update log for geocache $gc and user $username");
         }
       } else {
         DB::insert('log', array(
@@ -396,26 +362,12 @@
     return (double)str_replace('_', '.', $difficulty);
   }
 
-  function retrieveDifficultyForPremium($line) {
-    $difficulty = preg_split('/</', preg_split('/>/', $line)[1])[0];
-    return (double)str_replace('_', '.', $difficulty);
-  }
-
   function retrieveTerrain($line) {
     $terrain = preg_split('/.gif/', preg_split('/.*\/stars\/stars/', $line)[1])[0];
     return (double)str_replace('_', '.', $terrain);
   }
 
-  function retrieveTerrainForPremium($line) {
-    $terrain = preg_split('/</', preg_split('/>/', $line)[1])[0];
-    return (double)str_replace('_', '.', $terrain);
-  }
-
   function retrieveCacheName($line) {
-    return trim(preg_split('/</', preg_split('/>/', $line)[1])[0]);
-  }
-
-  function retrieveCacheNameForPremium($line) {
     return trim(preg_split('/</', preg_split('/>/', $line)[1])[0]);
   }
 
