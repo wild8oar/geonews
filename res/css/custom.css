@@ -39,3 +39,7 @@ li {
 .panel-primary > .panel-heading > a {
   color: white;
 }
+
+td, th {
+  text-align: center;
+}
